@@ -18,7 +18,7 @@ from typing import Any
 from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 
-from rag_system.config import RETRIEVAL_K
+from rag_system.config import CHROMA_COLLECTION_NAME, CHROMA_DB_PATH, RETRIEVAL_K
 from rag_system.retriever import retrieve_legal_framework, retrieve_precedents
 
 logging.basicConfig(
@@ -207,3 +207,82 @@ def precedent_search(
     except Exception as e:
         logger.exception("判例検索中に予期しないエラーが発生しました")
         return f"エラー: 判例検索中にエラーが発生しました: {e}"
+
+
+@tool("archive_stats")
+def archive_stats() -> str:
+    """書庫（法令・判例データベース）の統計情報を返します。
+
+    格納されているドキュメント数、文書タイプ別の件数、事件類型別の件数など、
+    書庫の概要を把握する際に使用してください。引数は不要です。
+    """
+    logger.info("書庫統計ツール実行")
+
+    try:
+        import chromadb
+
+        client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
+        collection = client.get_collection(name=CHROMA_COLLECTION_NAME)
+
+        total_count = collection.count()
+
+        # メタデータからドキュメントタイプ別・事件類型別の統計を集計
+        all_data = collection.get(include=["metadatas"])
+        metadatas = all_data.get("metadatas", [])
+
+        type_counts: dict[str, int] = {}
+        case_type_counts: dict[str, int] = {}
+        verdict_counts: dict[str, int] = {}
+        sources: set[str] = set()
+
+        for meta in metadatas:
+            if not meta:
+                continue
+            doc_type = meta.get("document_type", "不明")
+            type_counts[doc_type] = type_counts.get(doc_type, 0) + 1
+
+            case_type = meta.get("case_type")
+            if case_type:
+                case_type_counts[case_type] = case_type_counts.get(case_type, 0) + 1
+
+            verdict = meta.get("verdict")
+            if verdict:
+                verdict_counts[verdict] = verdict_counts.get(verdict, 0) + 1
+
+            source = meta.get("source")
+            if source:
+                sources.add(source)
+
+        # フォーマット済み統計文字列を構築
+        formatted_parts: list[str] = []
+        formatted_parts.append("【書庫統計情報】\n")
+        formatted_parts.append(f"総ドキュメント数: {total_count} 件")
+        formatted_parts.append(f"ソースファイル数: {len(sources)} 件")
+
+        formatted_parts.append("\n--- 文書タイプ別 ---")
+        for doc_type, count in sorted(type_counts.items()):
+            formatted_parts.append(f"  {doc_type}: {count} 件")
+
+        if case_type_counts:
+            formatted_parts.append("\n--- 事件類型別 ---")
+            for case_type, count in sorted(case_type_counts.items()):
+                formatted_parts.append(f"  {case_type}: {count} 件")
+
+        if verdict_counts:
+            formatted_parts.append("\n--- 判決結果別 ---")
+            for verdict, count in sorted(verdict_counts.items()):
+                formatted_parts.append(f"  {verdict}: {count} 件")
+
+        result = "\n".join(formatted_parts)
+        logger.info("書庫統計完了: 総ドキュメント数=%d", total_count)
+        return result
+
+    except FileNotFoundError as e:
+        logger.error("ChromaDBが初期化されていません: %s", e)
+        return (
+            "エラー: 書庫データベースが初期化されていません。\n"
+            "'python rag_system/ingest.py' を実行してデータを取り込んでください。"
+        )
+    except Exception as e:
+        logger.exception("書庫統計取得中に予期しないエラーが発生しました")
+        return f"エラー: 書庫統計の取得中にエラーが発生しました: {e}"
