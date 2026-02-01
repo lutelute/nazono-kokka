@@ -26,14 +26,16 @@ nazono-kokka/
 ├── rag_system/               # RAG コアシステム
 │   ├── config.py             # 設定（パス, LLM, Embedding, チャンク等）
 │   ├── main.py               # CLI インターフェース
-│   ├── ingest.py             # ドキュメント取り込みパイプライン
-│   ├── retriever.py          # ベクトル検索・取得ロジック
-│   ├── judge.py              # 司法推論チェーン（LangChain）
+│   │                         # --- AI（推論・生成）---
+│   ├── judge.py              # 司法推論チェーン（LangChain RetrievalQA）
 │   ├── tools.py              # LangChain Tool 定義（法令検索・判例検索・書庫統計）
-│   ├── agent.py              # ReAct エージェント（ツール統合）
-│   ├── backend_adapter.py    # LLM バックエンド抽象化
+│   ├── agent.py              # ReAct エージェント（ツール自律選択）
+│   ├── backend_adapter.py    # LLM バックエンド抽象化（Ollama）
 │   ├── comparison_engine.py  # 複数モデル精度比較エンジン
 │   ├── metrics.py            # 評価メトリクス算出
+│   │                         # --- DB（データ・検索）---
+│   ├── ingest.py             # ドキュメント取り込み → ChromaDB
+│   ├── retriever.py          # ベクトル類似度検索・メタデータフィルタ
 │   └── test_cases.py         # テストケース管理
 ├── ui/                       # Streamlit Web UI
 │   ├── chat_page.py          # チャットページ
@@ -66,12 +68,30 @@ nazono-kokka/
 
 ## 技術スタック
 
+### AI（推論・生成）
+
+| レイヤー | 技術 | 説明 |
+|----------|------|------|
+| LLM バックエンド | [Ollama](https://ollama.ai) | ローカル LLM 実行基盤 |
+| 推奨モデル | `schroneko/llama-3.1-swallow-8b-instruct-v0.1` | 日本語対応 8B モデル |
+| フォールバックモデル | `llama3.1:8b` | 汎用英語モデル |
+| RAG フレームワーク | [LangChain](https://www.langchain.com/) | RetrievalQA チェーン、ReAct エージェント |
+| エージェント | LangChain ReAct Agent | ツール自律選択による多段推論 |
+
+### DB（データ・検索）
+
+| レイヤー | 技術 | 説明 |
+|----------|------|------|
+| ベクトル DB | [ChromaDB](https://www.trychroma.com/) | ドキュメント埋め込みの永続化・類似度検索 |
+| Embedding モデル | HuggingFace `paraphrase-multilingual-mpnet-base-v2` | 多言語対応の文埋め込みモデル |
+| コレクション名 | `nazono_kokka_legal` | 法令 148 チャンク + 判例 1,206 チャンク = 計 1,354 チャンク |
+| 法体系ソース | Markdown（6 ファイル, 約 296 KB） | 憲法・刑法・民法・行政法・文化規制・倫理指針 |
+| 判例ソース | JSON（1,206 ファイル, 約 5.3 MB） | 刑事 486 件・民事 510 件・憲法 210 件 |
+
+### その他
+
 | レイヤー | 技術 |
 |----------|------|
-| LLM バックエンド | [Ollama](https://ollama.ai)（ローカル実行） |
-| ベクトル DB | [ChromaDB](https://www.trychroma.com/) |
-| Embedding | HuggingFace `paraphrase-multilingual-mpnet-base-v2` |
-| RAG フレームワーク | [LangChain](https://www.langchain.com/) |
 | Web UI | [Streamlit](https://streamlit.io/) |
 | 可視化 | [Plotly](https://plotly.com/) |
 | テスト | pytest |
@@ -99,7 +119,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Ollama のセットアップ
+### 3. AI セットアップ（Ollama）
 
 Ollama サーバーを起動し、使用するモデルをダウンロードします。
 
@@ -114,19 +134,19 @@ ollama pull schroneko/llama-3.1-swallow-8b-instruct-v0.1
 ollama pull llama3.1:8b
 ```
 
-### 4. ドキュメントの取り込み（ChromaDB 初期化）
+### 4. DB セットアップ（ChromaDB 初期化）
 
 法体系ドキュメントと判例をベクトル DB に取り込みます。
 
 ```bash
 source .venv/bin/activate
-python rag_system/ingest.py
+python -m rag_system.ingest
 ```
 
 既存データをリセットして再取り込みする場合：
 
 ```bash
-python rag_system/ingest.py --reset
+python -m rag_system.ingest --reset
 ```
 
 ## 起動方法
@@ -262,12 +282,19 @@ python -m pytest tests/ -x
 
 ## 環境変数
 
+### AI 関連
+
 | 変数名 | デフォルト値 | 説明 |
 |--------|-------------|------|
 | `OLLAMA_HOST` | `http://localhost:11434` | Ollama サーバーの URL |
-| `CHROMA_DB_PATH` | `<project_root>/chroma_db` | ChromaDB の保存先パス |
-| `LLM_TEMPERATURE` | `0.1` | LLM の temperature |
+| `LLM_TEMPERATURE` | `0.1` | LLM の temperature（生成のランダム性） |
 | `LLM_NUM_CTX` | `4096` | LLM のコンテキストウィンドウサイズ |
+
+### DB 関連
+
+| 変数名 | デフォルト値 | 説明 |
+|--------|-------------|------|
+| `CHROMA_DB_PATH` | `<project_root>/chroma_db` | ChromaDB の保存先パス |
 | `CHUNK_SIZE` | `1000` | ドキュメントチャンクサイズ（文字数） |
 | `CHUNK_OVERLAP` | `200` | チャンク間のオーバーラップ（文字数） |
 | `RETRIEVAL_K` | `5` | 検索時の取得ドキュメント数 |
