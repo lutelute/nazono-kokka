@@ -1,0 +1,12 @@
+langchain>=1.2.7
+langchain-classic
+langchain-community
+langchain-chroma
+langchain-ollama
+chromadb>=1.4.1
+sentence-transformers
+ollama
+streamlit
+plotly
+pandas
+pytest

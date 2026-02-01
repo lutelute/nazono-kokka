@@ -1,6 +1,36 @@
 # Auto Claude data directory
 .auto-claude/
 
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+
+# ChromaDB (local vector store)
+chroma_db/
+
+# Comparison results (generated at runtime)
+test_cases/results/*.json
+
+# Saved configuration presets (generated at runtime)
+test_cases/saved_configs.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
 # Auto Claude generated files
 .auto-claude-security.json
 .auto-claude-status

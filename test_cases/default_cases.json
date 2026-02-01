@@ -1,0 +1,124 @@
+{
+  "test_cases": [
+    {
+      "id": "TC-001",
+      "category": "criminal",
+      "query": "窃盗罪の量刑基準を示せ",
+      "expected_keywords": ["刑法", "窃盗", "量刑", "拘禁刑"],
+      "expected_statutes": ["刑法第191条"],
+      "expected_case_ids": ["CRIM-2020-0005"],
+      "difficulty": "basic",
+      "description": "基本的な窃盗罪の量刑基準照会"
+    },
+    {
+      "id": "TC-002",
+      "category": "criminal",
+      "query": "殺人罪の成立要件と刑罰について説明せよ",
+      "expected_keywords": ["殺人", "故意", "刑罰", "死刑", "無期"],
+      "expected_statutes": ["刑法第199条"],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "殺人罪の構成要件と法定刑の確認"
+    },
+    {
+      "id": "TC-003",
+      "category": "criminal",
+      "query": "詐欺罪における欺罔行為の認定基準を述べよ",
+      "expected_keywords": ["詐欺", "欺罔", "錯誤", "財物", "交付"],
+      "expected_statutes": ["刑法第246条"],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "詐欺罪の欺罔行為の要件認定"
+    },
+    {
+      "id": "TC-004",
+      "category": "criminal",
+      "query": "正当防衛の成立要件と過剰防衛の区別を説明せよ",
+      "expected_keywords": ["正当防衛", "急迫", "不正", "侵害", "過剰防衛", "防衛行為"],
+      "expected_statutes": ["刑法第36条"],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "正当防衛と過剰防衛の境界に関する法的分析"
+    },
+    {
+      "id": "TC-005",
+      "category": "civil",
+      "query": "不法行為に基づく損害賠償の要件を述べよ",
+      "expected_keywords": ["不法行為", "損害賠償", "過失", "因果関係", "違法性"],
+      "expected_statutes": ["民法第709条"],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "不法行為の基本的な成立要件の照会"
+    },
+    {
+      "id": "TC-006",
+      "category": "civil",
+      "query": "売買契約における瑕疵担保責任について説明せよ",
+      "expected_keywords": ["売買", "瑕疵", "担保", "契約不適合", "損害賠償", "解除"],
+      "expected_statutes": ["民法第570条"],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "売買契約の瑕疵担保責任（契約不適合責任）の解説"
+    },
+    {
+      "id": "TC-007",
+      "category": "civil",
+      "query": "賃貸借契約の終了事由と原状回復義務を述べよ",
+      "expected_keywords": ["賃貸借", "終了", "解除", "原状回復", "敷金"],
+      "expected_statutes": ["民法第601条"],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "賃貸借契約の終了と原状回復に関する基本事項"
+    },
+    {
+      "id": "TC-008",
+      "category": "civil",
+      "query": "相続における遺留分制度の趣旨と計算方法を説明せよ",
+      "expected_keywords": ["相続", "遺留分", "遺言", "法定相続", "減殺"],
+      "expected_statutes": ["民法第1042条"],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "遺留分制度の趣旨と具体的な計算方法"
+    },
+    {
+      "id": "TC-009",
+      "category": "constitutional",
+      "query": "表現の自由の保障範囲と制限の基準を述べよ",
+      "expected_keywords": ["表現の自由", "基本的人権", "制限", "公共の福祉", "検閲"],
+      "expected_statutes": ["憲法第21条"],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "表現の自由の保障と合理的制限の基準"
+    },
+    {
+      "id": "TC-010",
+      "category": "constitutional",
+      "query": "法の下の平等原則の内容と合理的差別の判断基準を述べよ",
+      "expected_keywords": ["平等", "差別", "合理的", "憲法第14条"],
+      "expected_statutes": ["憲法第14条"],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "平等原則における合理的差別の許容範囲"
+    },
+    {
+      "id": "TC-011",
+      "category": "constitutional",
+      "query": "違憲立法審査権の意義と行使の要件を述べよ",
+      "expected_keywords": ["違憲", "立法審査", "司法権", "最高裁判所", "憲法適合性"],
+      "expected_statutes": ["憲法第81条"],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "違憲立法審査権の制度趣旨と要件"
+    },
+    {
+      "id": "TC-012",
+      "category": "criminal",
+      "query": "共犯の成立要件と正犯との区別を説明せよ",
+      "expected_keywords": ["共犯", "正犯", "教唆", "幇助", "共同正犯", "意思連絡"],
+      "expected_statutes": ["刑法第60条", "刑法第61条"],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "共犯理論の基礎と正犯・共犯の区別基準"
+    }
+  ]
+}
