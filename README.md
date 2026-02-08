@@ -96,6 +96,17 @@ nazono-kokka/
 | 可視化 | [Plotly](https://plotly.com/) |
 | テスト | pytest |
 
+## デモ
+
+### セットアップ
+![セットアップ](assets/demo-setup.gif)
+
+### 起動
+![起動](assets/demo-launch.gif)
+
+### CLI 実行
+![CLI実行](assets/demo-cli.gif)
+
 ## セットアップ
 
 ### 前提条件
