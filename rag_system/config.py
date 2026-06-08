@@ -75,6 +75,43 @@ try:
 except (ValueError, TypeError):
     RETRIEVAL_K = 5
 
+# Number of candidates to fetch *before* reranking / fusion narrows them
+# down to the final ``RETRIEVAL_K``.  A wider candidate pool gives the
+# reranker more material to work with at the cost of latency.
+try:
+    RETRIEVAL_FETCH_K = int(os.environ.get("RETRIEVAL_FETCH_K", "20"))
+except (ValueError, TypeError):
+    RETRIEVAL_FETCH_K = 20
+
+# ---------------------------------------------------------------------------
+# Hybrid Search (sparse BM25 + dense vector fusion)
+# ---------------------------------------------------------------------------
+
+# Reciprocal Rank Fusion constant.  Larger values flatten the contribution
+# of high ranks; 60 is the value from the original RRF paper.
+try:
+    RRF_K = int(os.environ.get("RRF_K", "60"))
+except (ValueError, TypeError):
+    RRF_K = 60
+
+# Relative weight of the dense (vector) ranking vs. the sparse (BM25)
+# ranking during fusion.  0.0 = BM25 only, 1.0 = dense only.
+try:
+    HYBRID_DENSE_WEIGHT = float(os.environ.get("HYBRID_DENSE_WEIGHT", "0.5"))
+except (ValueError, TypeError):
+    HYBRID_DENSE_WEIGHT = 0.5
+
+# ---------------------------------------------------------------------------
+# Reranking (cross-encoder)
+# ---------------------------------------------------------------------------
+
+# Multilingual cross-encoder that scores (query, document) pairs jointly.
+# Supports Japanese.  Lazily loaded and gracefully skipped if unavailable.
+RERANKER_MODEL_NAME = os.environ.get(
+    "RERANKER_MODEL_NAME",
+    "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+)
+
 # ---------------------------------------------------------------------------
 # ChromaDB Collection
 # ---------------------------------------------------------------------------

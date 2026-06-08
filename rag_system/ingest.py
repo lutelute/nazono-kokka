@@ -163,7 +163,10 @@ def _precedent_to_text(data: dict) -> str:
 
     if summary := data.get("summary"):
         parts.append(f"\n概要:\n{summary}")
-    if reasoning := data.get("reasoning"):
+    # Prefer the richer, structured reasoning when it has been generated
+    # (scripts/enrich_precedents.py); fall back to the seed reasoning.
+    reasoning = data.get("reasoning_detailed") or data.get("reasoning")
+    if reasoning:
         parts.append(f"\n判決理由:\n{reasoning}")
 
     return "\n".join(parts)

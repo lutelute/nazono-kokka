@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass, field
 from typing import Any
 
 from langchain_chroma import Chroma
@@ -25,6 +26,8 @@ from rag_system.config import (
     CHROMA_COLLECTION_NAME,
     CHROMA_DB_PATH,
     EMBEDDINGS_MODEL_NAME,
+    HYBRID_DENSE_WEIGHT,
+    RETRIEVAL_FETCH_K,
     RETRIEVAL_K,
 )
 
@@ -381,3 +384,156 @@ def retrieve_with_scores(
     except Exception:
         logger.exception("スコア付き検索中にエラーが発生しました: %s", query[:50])
         return []
+
+
+# ---------------------------------------------------------------------------
+# Advanced Retrieval Pipeline (hybrid + rerank, with stage transparency)
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class StagedRetrieval:
+    """Result of the advanced retrieval pipeline, with each stage exposed.
+
+    Keeping every stage lets the UI show *why* the final documents were
+    chosen — the heart of explaining how RAG retrieval works.
+    """
+
+    query: str
+    final: list[Document]
+    dense: list[tuple[Document, float]] = field(default_factory=list)
+    sparse: list[tuple[Document, float]] = field(default_factory=list)
+    fused: list[Any] = field(default_factory=list)  # list[FusedResult]
+    reranked: list[Any] = field(default_factory=list)  # list[RerankedDocument]
+    used_hybrid: bool = False
+    used_rerank: bool = False
+
+
+def retrieve_advanced(
+    query: str,
+    *,
+    vectorstore: Chroma | None = None,
+    k: int | None = None,
+    fetch_k: int | None = None,
+    use_hybrid: bool = True,
+    use_rerank: bool = True,
+    dense_weight: float = HYBRID_DENSE_WEIGHT,
+    document_type: str | None = None,
+    case_type: str | None = None,
+    verdict: str | None = None,
+) -> StagedRetrieval:
+    """Run the full retrieval pipeline: dense → (hybrid fuse) → (rerank).
+
+    The pipeline always starts from a dense candidate pool of ``fetch_k``.
+    With ``use_hybrid`` it also runs BM25 and fuses the two with RRF. With
+    ``use_rerank`` the candidate pool is re-scored by a cross-encoder. The
+    final list is truncated to ``k``.
+
+    All intermediate stages are returned on the :class:`StagedRetrieval`
+    object so callers (chat, visualization) can display the journey.
+
+    Parameters
+    ----------
+    query:
+        Natural-language query.
+    vectorstore:
+        Existing Chroma store; loaded if ``None``.
+    k:
+        Final number of documents. Defaults to ``RETRIEVAL_K``.
+    fetch_k:
+        Candidate pool size before narrowing. Defaults to ``RETRIEVAL_FETCH_K``.
+    use_hybrid:
+        Fuse BM25 sparse search with the dense search.
+    use_rerank:
+        Re-score candidates with the cross-encoder.
+    dense_weight:
+        Dense vs. sparse weight for hybrid fusion.
+    document_type, case_type, verdict:
+        Optional metadata filters (applied to the dense search).
+
+    Returns
+    -------
+    StagedRetrieval
+    """
+    if not query or not query.strip():
+        return StagedRetrieval(query=query, final=[])
+
+    if vectorstore is None:
+        vectorstore = load_vectorstore()
+    if k is None:
+        k = RETRIEVAL_K
+    if fetch_k is None:
+        fetch_k = RETRIEVAL_FETCH_K
+    fetch_k = max(fetch_k, k)
+
+    where = _build_where_filter(
+        document_type=document_type, case_type=case_type, verdict=verdict
+    )
+
+    out = StagedRetrieval(query=query, final=[])
+
+    # --- Stage 1: dense candidate pool ---
+    # ``similarity_search_with_score`` returns a *distance* (lower = closer),
+    # which is well-defined for this collection.  We negate it so that, like
+    # every other ranking in the pipeline, higher = better.
+    dense_kwargs: dict[str, Any] = {}
+    if where is not None:
+        dense_kwargs["filter"] = where
+    try:
+        raw = vectorstore.similarity_search_with_score(
+            query, k=fetch_k, **dense_kwargs
+        )
+        out.dense = [(doc, -float(dist)) for doc, dist in raw]
+    except Exception:
+        logger.exception("密ベクトル検索に失敗: %s", query[:50])
+        out.dense = []
+
+    # --- Stage 2: optional hybrid fusion (dense + BM25) ---
+    candidates: list[Document]
+    if use_hybrid:
+        try:
+            from rag_system.hybrid import (
+                get_bm25_index,
+                reciprocal_rank_fusion,
+            )
+
+            index = get_bm25_index(vectorstore)
+            out.sparse = index.search(query, fetch_k)
+            out.fused = reciprocal_rank_fusion(
+                out.dense,
+                out.sparse,
+                k=fetch_k,
+                dense_weight=dense_weight,
+            )
+            out.used_hybrid = True
+            candidates = [fr.document for fr in out.fused]
+        except Exception:
+            logger.exception("ハイブリッド検索に失敗、密検索にフォールバック")
+            candidates = [doc for doc, _ in out.dense]
+    else:
+        candidates = [doc for doc, _ in out.dense]
+
+    # --- Stage 3: optional cross-encoder rerank ---
+    if use_rerank and candidates:
+        try:
+            from rag_system.rerank import rerank, reranker_available
+
+            if reranker_available():
+                out.reranked = rerank(query, candidates, top_n=k)
+                out.used_rerank = True
+                out.final = [rd.document for rd in out.reranked]
+            else:
+                out.final = candidates[:k]
+        except Exception:
+            logger.exception("リランクに失敗、リランク前の順序を使用")
+            out.final = candidates[:k]
+    else:
+        out.final = candidates[:k]
+
+    logger.info(
+        "高度検索完了 (hybrid=%s, rerank=%s) -> %d 件",
+        out.used_hybrid,
+        out.used_rerank,
+        len(out.final),
+    )
+    return out

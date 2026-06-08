@@ -5,8 +5,11 @@ langchain-chroma
 langchain-ollama
 chromadb>=1.4.1
 sentence-transformers
+rank-bm25
 ollama
 streamlit
 plotly
 pandas
+numpy
+scikit-learn
 pytest

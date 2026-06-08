@@ -1,0 +1,2275 @@
+{
+  "test_cases": [
+    {
+      "id": "TC-001",
+      "category": "criminal",
+      "query": "窃盗罪の量刑基準を示せ",
+      "expected_keywords": [
+        "刑法",
+        "窃盗",
+        "量刑",
+        "拘禁刑"
+      ],
+      "expected_statutes": [
+        "刑法第191条"
+      ],
+      "expected_case_ids": [
+        "CRIM-2020-0005"
+      ],
+      "difficulty": "basic",
+      "description": "基本的な窃盗罪の量刑基準照会"
+    },
+    {
+      "id": "TC-002",
+      "category": "criminal",
+      "query": "殺人罪の成立要件と刑罰について説明せよ",
+      "expected_keywords": [
+        "殺人",
+        "故意",
+        "刑罰",
+        "死刑",
+        "無期"
+      ],
+      "expected_statutes": [
+        "刑法第199条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "殺人罪の構成要件と法定刑の確認"
+    },
+    {
+      "id": "TC-003",
+      "category": "criminal",
+      "query": "詐欺罪における欺罔行為の認定基準を述べよ",
+      "expected_keywords": [
+        "詐欺",
+        "欺罔",
+        "錯誤",
+        "財物",
+        "交付"
+      ],
+      "expected_statutes": [
+        "刑法第246条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "詐欺罪の欺罔行為の要件認定"
+    },
+    {
+      "id": "TC-004",
+      "category": "criminal",
+      "query": "正当防衛の成立要件と過剰防衛の区別を説明せよ",
+      "expected_keywords": [
+        "正当防衛",
+        "急迫",
+        "不正",
+        "侵害",
+        "過剰防衛",
+        "防衛行為"
+      ],
+      "expected_statutes": [
+        "刑法第36条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "正当防衛と過剰防衛の境界に関する法的分析"
+    },
+    {
+      "id": "TC-005",
+      "category": "civil",
+      "query": "不法行為に基づく損害賠償の要件を述べよ",
+      "expected_keywords": [
+        "不法行為",
+        "損害賠償",
+        "過失",
+        "因果関係",
+        "違法性"
+      ],
+      "expected_statutes": [
+        "民法第709条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "不法行為の基本的な成立要件の照会"
+    },
+    {
+      "id": "TC-006",
+      "category": "civil",
+      "query": "売買契約における瑕疵担保責任について説明せよ",
+      "expected_keywords": [
+        "売買",
+        "瑕疵",
+        "担保",
+        "契約不適合",
+        "損害賠償",
+        "解除"
+      ],
+      "expected_statutes": [
+        "民法第570条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "売買契約の瑕疵担保責任（契約不適合責任）の解説"
+    },
+    {
+      "id": "TC-007",
+      "category": "civil",
+      "query": "賃貸借契約の終了事由と原状回復義務を述べよ",
+      "expected_keywords": [
+        "賃貸借",
+        "終了",
+        "解除",
+        "原状回復",
+        "敷金"
+      ],
+      "expected_statutes": [
+        "民法第601条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "賃貸借契約の終了と原状回復に関する基本事項"
+    },
+    {
+      "id": "TC-008",
+      "category": "civil",
+      "query": "相続における遺留分制度の趣旨と計算方法を説明せよ",
+      "expected_keywords": [
+        "相続",
+        "遺留分",
+        "遺言",
+        "法定相続",
+        "減殺"
+      ],
+      "expected_statutes": [
+        "民法第1042条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "遺留分制度の趣旨と具体的な計算方法"
+    },
+    {
+      "id": "TC-009",
+      "category": "constitutional",
+      "query": "表現の自由の保障範囲と制限の基準を述べよ",
+      "expected_keywords": [
+        "表現の自由",
+        "基本的人権",
+        "制限",
+        "公共の福祉",
+        "検閲"
+      ],
+      "expected_statutes": [
+        "憲法第21条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "表現の自由の保障と合理的制限の基準"
+    },
+    {
+      "id": "TC-010",
+      "category": "constitutional",
+      "query": "法の下の平等原則の内容と合理的差別の判断基準を述べよ",
+      "expected_keywords": [
+        "平等",
+        "差別",
+        "合理的",
+        "憲法第14条"
+      ],
+      "expected_statutes": [
+        "憲法第14条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "平等原則における合理的差別の許容範囲"
+    },
+    {
+      "id": "TC-011",
+      "category": "constitutional",
+      "query": "違憲立法審査権の意義と行使の要件を述べよ",
+      "expected_keywords": [
+        "違憲",
+        "立法審査",
+        "司法権",
+        "最高裁判所",
+        "憲法適合性"
+      ],
+      "expected_statutes": [
+        "憲法第81条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "違憲立法審査権の制度趣旨と要件"
+    },
+    {
+      "id": "TC-012",
+      "category": "criminal",
+      "query": "共犯の成立要件と正犯との区別を説明せよ",
+      "expected_keywords": [
+        "共犯",
+        "正犯",
+        "教唆",
+        "幇助",
+        "共同正犯",
+        "意思連絡"
+      ],
+      "expected_statutes": [
+        "刑法第60条",
+        "刑法第61条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "共犯理論の基礎と正犯・共犯の区別基準"
+    },
+    {
+      "id": "GEN-001",
+      "category": "criminal",
+      "query": "窃盗の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "窃盗",
+        "刑法",
+        "量刑",
+        "被害弁償の量刑考慮"
+      ],
+      "expected_statutes": [
+        "刑法第191条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "窃盗（40件）に関する基本論点"
+    },
+    {
+      "id": "GEN-002",
+      "category": "criminal",
+      "query": "窃盗の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "窃盗",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第191条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "窃盗の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-003",
+      "category": "criminal",
+      "query": "詐欺の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "詐欺",
+        "刑法",
+        "量刑"
+      ],
+      "expected_statutes": [
+        "刑法第198条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "詐欺（35件）に関する基本論点"
+    },
+    {
+      "id": "GEN-004",
+      "category": "criminal",
+      "query": "詐欺の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "詐欺",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第198条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "詐欺の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-005",
+      "category": "criminal",
+      "query": "傷害の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "傷害",
+        "刑法",
+        "量刑",
+        "身体の安全の保護"
+      ],
+      "expected_statutes": [
+        "刑法第155条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "傷害（35件）に関する基本論点"
+    },
+    {
+      "id": "GEN-006",
+      "category": "criminal",
+      "query": "傷害の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "傷害",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第155条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "傷害の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-007",
+      "category": "criminal",
+      "query": "殺人の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "殺人",
+        "刑法",
+        "量刑",
+        "生命の絶対的保護"
+      ],
+      "expected_statutes": [
+        "刑法第151条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "殺人（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-008",
+      "category": "criminal",
+      "query": "殺人の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "殺人",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第151条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "殺人の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-009",
+      "category": "civil",
+      "query": "売買契約をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "売買契約",
+        "民法",
+        "責任",
+        "契約不適合責任"
+      ],
+      "expected_statutes": [
+        "民法第145条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "売買契約（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-010",
+      "category": "civil",
+      "query": "売買契約において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "売買契約",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第145条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "売買契約の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-011",
+      "category": "civil",
+      "query": "賃貸借をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "賃貸借",
+        "民法",
+        "責任",
+        "賃貸借契約の解釈"
+      ],
+      "expected_statutes": [
+        "民法第155条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "賃貸借（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-012",
+      "category": "civil",
+      "query": "賃貸借において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "賃貸借",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第155条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "賃貸借の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-013",
+      "category": "civil",
+      "query": "不法行為をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "不法行為",
+        "民法",
+        "責任",
+        "過失相殺"
+      ],
+      "expected_statutes": [
+        "民法第186条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "不法行為（交通事故）（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-014",
+      "category": "civil",
+      "query": "不法行為において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "不法行為",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第186条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "不法行為（交通事故）の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-015",
+      "category": "civil",
+      "query": "相続をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "相続",
+        "民法",
+        "責任",
+        "法定相続分"
+      ],
+      "expected_statutes": [
+        "民法第236条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "相続（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-016",
+      "category": "civil",
+      "query": "相続において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "相続",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第236条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "相続の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-017",
+      "category": "civil",
+      "query": "家事事件をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "家事事件",
+        "民法",
+        "責任"
+      ],
+      "expected_statutes": [
+        "民法第201条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "家事事件（30件）に関する基本論点"
+    },
+    {
+      "id": "GEN-018",
+      "category": "civil",
+      "query": "家事事件において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "家事事件",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第201条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "家事事件の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-019",
+      "category": "criminal",
+      "query": "強盗の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "強盗",
+        "刑法",
+        "量刑",
+        "事後強盗の成立要件"
+      ],
+      "expected_statutes": [
+        "刑法第193条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "強盗（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-020",
+      "category": "criminal",
+      "query": "強盗の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "強盗",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第193条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "強盗の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-021",
+      "category": "criminal",
+      "query": "サイバー犯罪の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "サイバー犯罪",
+        "刑法",
+        "量刑",
+        "個人情報保護と犯罪抑止"
+      ],
+      "expected_statutes": [
+        "刑法第219条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "サイバー犯罪（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-022",
+      "category": "criminal",
+      "query": "サイバー犯罪の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "サイバー犯罪",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第219条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "サイバー犯罪の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-023",
+      "category": "criminal",
+      "query": "薬物犯罪の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "薬物犯罪",
+        "刑法",
+        "量刑",
+        "薬物犯罪の社会的害悪"
+      ],
+      "expected_statutes": [
+        "刑法第238条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "薬物犯罪（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-024",
+      "category": "criminal",
+      "query": "薬物犯罪の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "薬物犯罪",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第238条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "薬物犯罪の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-025",
+      "category": "civil",
+      "query": "不法行為をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "不法行為",
+        "民法",
+        "責任",
+        "違法性の判断"
+      ],
+      "expected_statutes": [
+        "民法第186条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "不法行為（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-026",
+      "category": "civil",
+      "query": "不法行為において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "不法行為",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第186条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "不法行為の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-027",
+      "category": "civil",
+      "query": "債務不履行をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "債務不履行",
+        "民法",
+        "責任",
+        "債務不履行の要件"
+      ],
+      "expected_statutes": [
+        "民法第112条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "債務不履行（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-028",
+      "category": "civil",
+      "query": "債務不履行において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "債務不履行",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第112条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "債務不履行の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-029",
+      "category": "civil",
+      "query": "消費貸借をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "消費貸借",
+        "民法",
+        "責任",
+        "消費貸借の成立要件"
+      ],
+      "expected_statutes": [
+        "民法第150条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "basic",
+      "description": "消費貸借（25件）に関する基本論点"
+    },
+    {
+      "id": "GEN-030",
+      "category": "civil",
+      "query": "消費貸借において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "消費貸借",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第150条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "消費貸借の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-031",
+      "category": "criminal",
+      "query": "公務執行妨害の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "公務執行妨害",
+        "刑法",
+        "量刑",
+        "公務員の職務の適法性"
+      ],
+      "expected_statutes": [
+        "刑法第86条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "公務執行妨害（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-032",
+      "category": "criminal",
+      "query": "公務執行妨害の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "公務執行妨害",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第86条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "公務執行妨害の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-033",
+      "category": "criminal",
+      "query": "汚職の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "汚職",
+        "刑法",
+        "量刑",
+        "職務関連性の判断"
+      ],
+      "expected_statutes": [
+        "刑法第143条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "汚職（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-034",
+      "category": "criminal",
+      "query": "汚職の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "汚職",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第143条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "汚職の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-035",
+      "category": "criminal",
+      "query": "過失致死傷の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "過失致死傷",
+        "刑法",
+        "量刑",
+        "危険運転の厳罰化"
+      ],
+      "expected_statutes": [
+        "刑法第164条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "過失致死傷（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-036",
+      "category": "criminal",
+      "query": "過失致死傷の事案で、無罪となる場合と有罪となる場合の分かれ目を判例から整理せよ。",
+      "expected_keywords": [
+        "過失致死傷",
+        "刑法"
+      ],
+      "expected_statutes": [
+        "刑法第164条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "過失致死傷の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-037",
+      "category": "civil",
+      "query": "請負契約をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "請負契約",
+        "民法",
+        "責任",
+        "請負人の担保責任"
+      ],
+      "expected_statutes": [
+        "民法第164条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "請負契約（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-038",
+      "category": "civil",
+      "query": "請負契約において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "請負契約",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第164条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "請負契約の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-039",
+      "category": "civil",
+      "query": "不当利得をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "不当利得",
+        "民法",
+        "責任",
+        "法律上の原因の有無"
+      ],
+      "expected_statutes": [
+        "民法第183条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "不当利得（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-040",
+      "category": "civil",
+      "query": "不当利得において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "不当利得",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第183条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "不当利得の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-041",
+      "category": "civil",
+      "query": "物権をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "物権",
+        "民法",
+        "責任",
+        "所有権の範囲"
+      ],
+      "expected_statutes": [
+        "民法第60条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "物権（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-042",
+      "category": "civil",
+      "query": "物権において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "物権",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第60条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "物権の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-043",
+      "category": "civil",
+      "query": "担保権をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "担保権",
+        "民法",
+        "責任",
+        "抵当権の効力"
+      ],
+      "expected_statutes": [
+        "民法第101条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "担保権（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-044",
+      "category": "civil",
+      "query": "担保権において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "担保権",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第101条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "担保権の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-045",
+      "category": "civil",
+      "query": "意思表示をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "意思表示",
+        "民法",
+        "責任",
+        "意思表示の瑕疵"
+      ],
+      "expected_statutes": [
+        "民法第25条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "意思表示（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-046",
+      "category": "civil",
+      "query": "意思表示において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "意思表示",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第25条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "意思表示の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-047",
+      "category": "civil",
+      "query": "雇用をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "雇用",
+        "民法",
+        "責任",
+        "雇用契約の解釈"
+      ],
+      "expected_statutes": [
+        "民法第161条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "雇用（20件）に関する基本論点"
+    },
+    {
+      "id": "GEN-048",
+      "category": "civil",
+      "query": "雇用において損害賠償が認められるための要件を、判例の判断とともに具体的に述べよ。",
+      "expected_keywords": [
+        "雇用",
+        "民法"
+      ],
+      "expected_statutes": [
+        "民法第161条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "雇用の応用論点（判例の分岐）"
+    },
+    {
+      "id": "GEN-049",
+      "category": "criminal",
+      "query": "暴行の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "暴行",
+        "刑法",
+        "量刑",
+        "暴行罪の成立範囲"
+      ],
+      "expected_statutes": [
+        "刑法第22条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "暴行（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-050",
+      "category": "criminal",
+      "query": "環境犯罪の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "環境犯罪",
+        "刑法",
+        "量刑",
+        "生態系の保護"
+      ],
+      "expected_statutes": [
+        "刑法第223条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "環境犯罪（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-051",
+      "category": "criminal",
+      "query": "器物損壊の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "器物損壊",
+        "刑法",
+        "量刑",
+        "器物損壊の故意"
+      ],
+      "expected_statutes": [
+        "刑法第213条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "器物損壊（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-052",
+      "category": "criminal",
+      "query": "脅迫の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "脅迫",
+        "刑法",
+        "量刑",
+        "ストーカー行為と脅迫"
+      ],
+      "expected_statutes": [
+        "刑法第172条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "脅迫（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-053",
+      "category": "criminal",
+      "query": "横領の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "横領",
+        "刑法",
+        "量刑",
+        "業務上の地位の利用"
+      ],
+      "expected_statutes": [
+        "刑法第203条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "横領（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-054",
+      "category": "criminal",
+      "query": "放火の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "放火",
+        "刑法",
+        "量刑",
+        "公共の危険の発生"
+      ],
+      "expected_statutes": [
+        "刑法第88条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "放火（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-055",
+      "category": "criminal",
+      "query": "偽造の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "偽造",
+        "刑法",
+        "量刑",
+        "文書の社会的信用の保護"
+      ],
+      "expected_statutes": [
+        "刑法第115条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "偽造（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-056",
+      "category": "civil",
+      "query": "保証債務をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "保証債務",
+        "民法",
+        "責任",
+        "保証契約の書面性"
+      ],
+      "expected_statutes": [
+        "民法第121条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "保証債務（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-057",
+      "category": "civil",
+      "query": "委任契約をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "委任契約",
+        "民法",
+        "責任",
+        "善管注意義務"
+      ],
+      "expected_statutes": [
+        "民法第167条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "委任契約（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-058",
+      "category": "civil",
+      "query": "代理をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "代理",
+        "民法",
+        "責任",
+        "代理権の範囲"
+      ],
+      "expected_statutes": [
+        "民法第34条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "代理（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-059",
+      "category": "civil",
+      "query": "使用者責任をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "使用者責任",
+        "民法",
+        "責任",
+        "事業の執行について"
+      ],
+      "expected_statutes": [
+        "民法第186条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "使用者責任（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-060",
+      "category": "civil",
+      "query": "製造物責任をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "製造物責任",
+        "民法",
+        "責任",
+        "製造物の欠陥"
+      ],
+      "expected_statutes": [
+        "民法第197条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "製造物責任（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-061",
+      "category": "civil",
+      "query": "遺言をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "遺言",
+        "民法",
+        "責任",
+        "遺言の方式"
+      ],
+      "expected_statutes": [
+        "民法第252条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "遺言（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-062",
+      "category": "constitutional",
+      "query": "表現の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "表現の自由",
+        "憲法",
+        "表現の自由の優越的地位"
+      ],
+      "expected_statutes": [
+        "憲法第17条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "表現の自由（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-063",
+      "category": "constitutional",
+      "query": "法の下の平等に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "法の下の平等",
+        "憲法",
+        "平等原則"
+      ],
+      "expected_statutes": [
+        "憲法第14条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "法の下の平等（15件）に関する基本論点"
+    },
+    {
+      "id": "GEN-064",
+      "category": "constitutional",
+      "query": "プライバシーの権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "プライバシーの権利",
+        "憲法",
+        "プライバシー権"
+      ],
+      "expected_statutes": [
+        "憲法第20条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "プライバシーの権利（12件）に関する基本論点"
+    },
+    {
+      "id": "GEN-065",
+      "category": "constitutional",
+      "query": "違憲立法審査に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "違憲立法審査",
+        "憲法",
+        "違憲審査権"
+      ],
+      "expected_statutes": [
+        "憲法第71条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "違憲立法審査（12件）に関する基本論点"
+    },
+    {
+      "id": "GEN-066",
+      "category": "constitutional",
+      "query": "権力分立に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "権力分立",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第45条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "権力分立（12件）に関する基本論点"
+    },
+    {
+      "id": "GEN-067",
+      "category": "criminal",
+      "query": "贈収賄の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "贈収賄",
+        "刑法",
+        "量刑",
+        "あっせん収賄の成立要件"
+      ],
+      "expected_statutes": [
+        "刑法第143条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "贈収賄（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-068",
+      "category": "criminal",
+      "query": "テロ行為の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "テロ行為",
+        "刑法",
+        "量刑",
+        "公共の安全の確保"
+      ],
+      "expected_statutes": [
+        "刑法第228条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "テロ行為（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-069",
+      "category": "criminal",
+      "query": "組織犯罪の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "組織犯罪",
+        "刑法",
+        "量刑",
+        "組織犯罪の社会的害悪"
+      ],
+      "expected_statutes": [
+        "刑法第233条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "組織犯罪（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-070",
+      "category": "criminal",
+      "query": "武器不法所持の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "武器不法所持",
+        "刑法",
+        "量刑",
+        "不法所持の危険性"
+      ],
+      "expected_statutes": [
+        "刑法第240条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "武器不法所持（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-071",
+      "category": "criminal",
+      "query": "名誉毀損の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "名誉毀損",
+        "刑法",
+        "量刑",
+        "名誉毀損と真実性の抗弁"
+      ],
+      "expected_statutes": [
+        "刑法第182条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "名誉毀損（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-072",
+      "category": "criminal",
+      "query": "住居侵入の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "住居侵入",
+        "刑法",
+        "量刑",
+        "住居の平穏の保護"
+      ],
+      "expected_statutes": [
+        "刑法第215条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "住居侵入（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-073",
+      "category": "criminal",
+      "query": "恐喝の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "恐喝",
+        "刑法",
+        "量刑",
+        "財産権と意思の自由の保護"
+      ],
+      "expected_statutes": [
+        "刑法第201条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "恐喝（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-074",
+      "category": "criminal",
+      "query": "業務妨害の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "業務妨害",
+        "刑法",
+        "量刑",
+        "信用毀損の要件"
+      ],
+      "expected_statutes": [
+        "刑法第188条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "業務妨害（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-075",
+      "category": "criminal",
+      "query": "わいせつ犯罪の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "わいせつ犯罪",
+        "刑法",
+        "量刑",
+        "公共の善良な風俗の保護"
+      ],
+      "expected_statutes": [
+        "刑法第127条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "わいせつ犯罪（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-076",
+      "category": "civil",
+      "query": "工作物責任をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "工作物責任",
+        "民法",
+        "責任",
+        "設置又は保存の瑕疵"
+      ],
+      "expected_statutes": [
+        "民法第192条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "工作物責任（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-077",
+      "category": "civil",
+      "query": "債権譲渡をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "債権譲渡",
+        "民法",
+        "責任",
+        "債権譲渡の対抗要件"
+      ],
+      "expected_statutes": [
+        "民法第125条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "債権譲渡（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-078",
+      "category": "civil",
+      "query": "時効をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "時効",
+        "民法",
+        "責任",
+        "時効の援用"
+      ],
+      "expected_statutes": [
+        "民法第51条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "時効（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-079",
+      "category": "civil",
+      "query": "環境汚染をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "環境汚染",
+        "民法",
+        "責任",
+        "無過失責任"
+      ],
+      "expected_statutes": [
+        "民法第198条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "環境汚染（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-080",
+      "category": "civil",
+      "query": "定型約款をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "定型約款",
+        "民法",
+        "責任",
+        "定型約款の拘束力"
+      ],
+      "expected_statutes": [
+        "民法第142条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "定型約款（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-081",
+      "category": "civil",
+      "query": "親子関係をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "親子関係",
+        "民法",
+        "責任",
+        "親子関係の確定"
+      ],
+      "expected_statutes": [
+        "民法第217条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "親子関係（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-082",
+      "category": "civil",
+      "query": "共同不法行為をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "共同不法行為",
+        "民法",
+        "責任",
+        "共同不法行為の成立要件"
+      ],
+      "expected_statutes": [
+        "民法第194条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "共同不法行為（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-083",
+      "category": "constitutional",
+      "query": "信教の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "信教の自由",
+        "憲法",
+        "政教分離"
+      ],
+      "expected_statutes": [
+        "憲法第16条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "信教の自由（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-084",
+      "category": "constitutional",
+      "query": "選挙権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "選挙権",
+        "憲法",
+        "選挙権の保障"
+      ],
+      "expected_statutes": [
+        "憲法第47条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "選挙権（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-085",
+      "category": "constitutional",
+      "query": "地方自治に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "地方自治",
+        "憲法",
+        "地方自治の本旨"
+      ],
+      "expected_statutes": [
+        "憲法第79条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "地方自治（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-086",
+      "category": "constitutional",
+      "query": "財産権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "財産権",
+        "憲法",
+        "正当な補償"
+      ],
+      "expected_statutes": [
+        "憲法第22条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "財産権（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-087",
+      "category": "constitutional",
+      "query": "財政に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "財政",
+        "憲法",
+        "租税法律主義"
+      ],
+      "expected_statutes": [
+        "憲法第84条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "intermediate",
+      "description": "財政（10件）に関する基本論点"
+    },
+    {
+      "id": "GEN-088",
+      "category": "criminal",
+      "query": "逮捕監禁の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "逮捕監禁",
+        "刑法",
+        "量刑",
+        "人身の自由の保護"
+      ],
+      "expected_statutes": [
+        "刑法第170条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "逮捕監禁（8件）に関する基本論点"
+    },
+    {
+      "id": "GEN-089",
+      "category": "criminal",
+      "query": "偽証の構成要件と量刑の判断基準を、関連する条文と判例に基づいて説明せよ。",
+      "expected_keywords": [
+        "偽証",
+        "刑法",
+        "量刑",
+        "司法作用の公正の確保"
+      ],
+      "expected_statutes": [
+        "刑法第81条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "偽証（8件）に関する基本論点"
+    },
+    {
+      "id": "GEN-090",
+      "category": "constitutional",
+      "query": "裁判を受ける権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "裁判を受ける権利",
+        "憲法",
+        "弁護人依頼権"
+      ],
+      "expected_statutes": [
+        "憲法第27条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "裁判を受ける権利（8件）に関する基本論点"
+    },
+    {
+      "id": "GEN-091",
+      "category": "constitutional",
+      "query": "最高法規に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "最高法規",
+        "憲法",
+        "最高法規性"
+      ],
+      "expected_statutes": [
+        "憲法第96条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "最高法規（6件）に関する基本論点"
+    },
+    {
+      "id": "GEN-092",
+      "category": "civil",
+      "query": "事務管理をめぐる法的責任の有無と要件について、条文と判例に基づいて論じよ。",
+      "expected_keywords": [
+        "事務管理",
+        "民法",
+        "責任",
+        "事務管理の成立要件"
+      ],
+      "expected_statutes": [
+        "民法第179条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "事務管理（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-093",
+      "category": "constitutional",
+      "query": "平和主義に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "平和主義",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第9条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "平和主義（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-094",
+      "category": "constitutional",
+      "query": "身体の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "身体の自由",
+        "憲法",
+        "令状主義"
+      ],
+      "expected_statutes": [
+        "憲法第24条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "身体の自由（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-095",
+      "category": "constitutional",
+      "query": "知る権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "知る権利",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第19条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "知る権利（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-096",
+      "category": "constitutional",
+      "query": "学問の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "学問の自由",
+        "憲法",
+        "学問の自由の不可侵性"
+      ],
+      "expected_statutes": [
+        "憲法第18条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "学問の自由（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-097",
+      "category": "constitutional",
+      "query": "国家賠償に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "国家賠償",
+        "憲法",
+        "国家賠償責任"
+      ],
+      "expected_statutes": [
+        "憲法第39条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "国家賠償（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-098",
+      "category": "constitutional",
+      "query": "緊急事態に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "緊急事態",
+        "憲法",
+        "緊急事態と人権"
+      ],
+      "expected_statutes": [
+        "憲法第93条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "緊急事態（5件）に関する基本論点"
+    },
+    {
+      "id": "GEN-099",
+      "category": "constitutional",
+      "query": "思想良心の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "思想良心の自由",
+        "憲法",
+        "思想良心の自由の絶対性"
+      ],
+      "expected_statutes": [
+        "憲法第15条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "思想良心の自由（4件）に関する基本論点"
+    },
+    {
+      "id": "GEN-100",
+      "category": "constitutional",
+      "query": "憲法改正に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "憲法改正",
+        "憲法",
+        "改正の限界"
+      ],
+      "expected_statutes": [
+        "憲法第99条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "憲法改正（4件）に関する基本論点"
+    },
+    {
+      "id": "GEN-101",
+      "category": "constitutional",
+      "query": "職業選択の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "職業選択の自由",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第21条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "職業選択の自由（4件）に関する基本論点"
+    },
+    {
+      "id": "GEN-102",
+      "category": "constitutional",
+      "query": "生存権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "生存権",
+        "憲法",
+        "生存権の具体的権利性"
+      ],
+      "expected_statutes": [
+        "憲法第31条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "生存権（3件）に関する基本論点"
+    },
+    {
+      "id": "GEN-103",
+      "category": "constitutional",
+      "query": "請願権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "請願権",
+        "憲法",
+        "請願権の保障"
+      ],
+      "expected_statutes": [
+        "憲法第38条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "請願権（3件）に関する基本論点"
+    },
+    {
+      "id": "GEN-104",
+      "category": "constitutional",
+      "query": "個人の尊重に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "個人の尊重",
+        "憲法",
+        "自己決定権"
+      ],
+      "expected_statutes": [
+        "憲法第13条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "個人の尊重（3件）に関する基本論点"
+    },
+    {
+      "id": "GEN-105",
+      "category": "constitutional",
+      "query": "環境権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "環境権",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第35条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "環境権（3件）に関する基本論点"
+    },
+    {
+      "id": "GEN-106",
+      "category": "constitutional",
+      "query": "教育を受ける権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "教育を受ける権利",
+        "憲法",
+        "教育の機会均等"
+      ],
+      "expected_statutes": [
+        "憲法第32条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "教育を受ける権利（2件）に関する基本論点"
+    },
+    {
+      "id": "GEN-107",
+      "category": "constitutional",
+      "query": "労働基本権に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "労働基本権",
+        "憲法",
+        "公務員の労働基本権"
+      ],
+      "expected_statutes": [
+        "憲法第34条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "労働基本権（2件）に関する基本論点"
+    },
+    {
+      "id": "GEN-108",
+      "category": "constitutional",
+      "query": "デジタル権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "デジタル権利",
+        "憲法",
+        "デジタルデータの権利"
+      ],
+      "expected_statutes": [
+        "憲法第37条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "デジタル権利（2件）に関する基本論点"
+    },
+    {
+      "id": "GEN-109",
+      "category": "constitutional",
+      "query": "居住移転の自由に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "居住移転の自由",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第21条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "居住移転の自由（2件）に関する基本論点"
+    },
+    {
+      "id": "GEN-110",
+      "category": "constitutional",
+      "query": "司法権の独立に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "司法権の独立",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第69条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "司法権の独立（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-111",
+      "category": "constitutional",
+      "query": "住居の不可侵に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "住居の不可侵",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第25条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "住居の不可侵（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-112",
+      "category": "constitutional",
+      "query": "二重の危険の禁止に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "二重の危険の禁止",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第29条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "二重の危険の禁止（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-113",
+      "category": "constitutional",
+      "query": "遡及処罰の禁止に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "遡及処罰の禁止",
+        "憲法",
+        "遡及処罰の絶対的禁止"
+      ],
+      "expected_statutes": [
+        "憲法第30条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "遡及処罰の禁止（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-114",
+      "category": "constitutional",
+      "query": "国際協調に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "国際協調",
+        "憲法",
+        "国際法の遵守義務"
+      ],
+      "expected_statutes": [
+        "憲法第7条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "国際協調（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-115",
+      "category": "constitutional",
+      "query": "文化的権利に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "文化的権利",
+        "憲法",
+        "文化遺産の保護"
+      ],
+      "expected_statutes": [
+        "憲法第36条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "文化的権利（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-116",
+      "category": "constitutional",
+      "query": "裁判の公開に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "裁判の公開",
+        "憲法",
+        "裁判の公開原則"
+      ],
+      "expected_statutes": [
+        "憲法第72条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "裁判の公開（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-117",
+      "category": "constitutional",
+      "query": "残虐な刑罰の禁止に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "残虐な刑罰の禁止",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第26条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "残虐な刑罰の禁止（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-118",
+      "category": "constitutional",
+      "query": "将来世代への責任に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "将来世代への責任",
+        "憲法",
+        "将来世代の利益"
+      ],
+      "expected_statutes": [
+        "憲法第111条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "将来世代への責任（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-119",
+      "category": "constitutional",
+      "query": "納税の義務に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "納税の義務",
+        "憲法",
+        "納税義務の履行"
+      ],
+      "expected_statutes": [
+        "憲法第40条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "納税の義務（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-120",
+      "category": "constitutional",
+      "query": "環境保全の義務に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "環境保全の義務",
+        "憲法"
+      ],
+      "expected_statutes": [
+        "憲法第43条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "環境保全の義務（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-121",
+      "category": "constitutional",
+      "query": "裁判員制度に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "裁判員制度",
+        "憲法",
+        "裁判員制度の合憲性"
+      ],
+      "expected_statutes": [
+        "憲法第77条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "裁判員制度（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-122",
+      "category": "constitutional",
+      "query": "自白の証拠能力に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "自白の証拠能力",
+        "憲法",
+        "違法収集証拠排除法則"
+      ],
+      "expected_statutes": [
+        "憲法第75条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "自白の証拠能力（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-123",
+      "category": "constitutional",
+      "query": "刑事補償に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "刑事補償",
+        "憲法",
+        "刑事補償請求権"
+      ],
+      "expected_statutes": [
+        "憲法第76条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "刑事補償（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-124",
+      "category": "constitutional",
+      "query": "憲法解釈に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "憲法解釈",
+        "憲法",
+        "憲法解釈委員会の権限"
+      ],
+      "expected_statutes": [
+        "憲法第109条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "憲法解釈（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-125",
+      "category": "constitutional",
+      "query": "国民の定義に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "国民の定義",
+        "憲法",
+        "国籍取得権"
+      ],
+      "expected_statutes": [
+        "憲法第10条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "国民の定義（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-126",
+      "category": "constitutional",
+      "query": "叡智の守護者に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "叡智の守護者",
+        "憲法",
+        "国家元首の民主的正統性"
+      ],
+      "expected_statutes": [
+        "憲法第64条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "叡智の守護者（1件）に関する基本論点"
+    },
+    {
+      "id": "GEN-127",
+      "category": "constitutional",
+      "query": "憲法の理念に関する憲法上の保障の範囲と、合憲性の判断基準を述べよ。",
+      "expected_keywords": [
+        "憲法の理念",
+        "憲法",
+        "叡智の追求"
+      ],
+      "expected_statutes": [
+        "憲法第112条"
+      ],
+      "expected_case_ids": [],
+      "difficulty": "advanced",
+      "description": "憲法の理念（1件）に関する基本論点"
+    }
+  ]
+}
