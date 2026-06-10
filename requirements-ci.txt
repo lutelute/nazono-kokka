@@ -1,0 +1,18 @@
+# --- CI 専用の軽量依存 -------------------------------------------------------
+# model/DB 非依存の軽量テスト（test_semantic_axes / test_highlight_view /
+# test_config）を回すために必要な最小限のパッケージだけを列挙する。
+#
+# これらのテストが辿る import 連鎖は
+#   ui.highlight_view → rag_system.text_alignment → rag_system.vector_analysis
+# だが、vector_analysis のトップレベル import は numpy＋標準ライブラリのみで、
+# chromadb / sentence-transformers / langchain / torch はすべて関数内で遅延
+# import される。したがって CI では下記だけで全テストが通る。
+#
+# torch を含むフル依存（requirements.txt）は ~3 分かかるが、この slim 構成なら
+# 数十秒で済む。重いテスト（text_alignment 実体 / smoke / visualization_page）は
+# ローカルで `PYTHONPATH=. pytest tests/ -q` を推奨。
+numpy
+pandas
+scikit-learn
+streamlit
+pytest
