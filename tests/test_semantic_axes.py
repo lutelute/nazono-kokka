@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from rag_system.vector_analysis import (
+from rag_system.semantic_axes import (
     axis_variance_by_group,
     concept_axis,
     explained_variance,

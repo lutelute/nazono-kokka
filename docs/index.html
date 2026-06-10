@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>謎の国家 RAG ― 教材ショーケース</title>
+<style>
+:root{--ink:#1e2330;--sub:#5b6478;--line:#e6e9f2;--bg:#eef1f8;--card:#fff;
+  --shadow:0 14px 44px -18px rgba(30,30,80,.28);--indigo:#6366f1;--axis:#8b5cf6;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1100px 600px at 85% -12%,rgba(139,92,246,.12),transparent),
+   radial-gradient(900px 520px at -10% 4%,rgba(239,68,68,.07),transparent);}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px 70px}
+.hero{position:relative;overflow:hidden;border-radius:0 0 30px 30px;margin:0 -18px 26px;
+  background:linear-gradient(135deg,#171b3a 0%,#3a1d6b 52%,#0e2a52 100%);color:#fff;
+  padding:50px 34px 42px;box-shadow:var(--shadow)}
+.hero::before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,#8b5cf6,transparent 70%);top:-130px;right:-70px;filter:blur(48px);opacity:.6}
+.hero::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,#06b6d4,transparent 70%);bottom:-150px;left:-50px;filter:blur(48px);opacity:.5}
+.hero .kic{font-size:.78rem;letter-spacing:.2em;font-weight:700;color:#c9b8ff;position:relative}
+.hero h1{font-size:2.1rem;font-weight:800;margin:.18em 0 .14em;position:relative}
+.hero p{color:#c9d0f0;max-width:640px;margin:6px 0 0;position:relative}
+.lead{font-weight:700;font-size:1.05rem;margin:8px 0 4px}
+.sec{font-size:.76rem;font-weight:800;letter-spacing:.12em;color:var(--axis);text-transform:uppercase;margin:30px 0 6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:20px 20px 22px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.tile:hover{transform:translateY(-4px);box-shadow:0 18px 40px -16px rgba(99,102,241,.45)}
+.tile .ic{font-size:1.9rem}
+.tile .step{font-size:.72rem;font-weight:800;color:var(--indigo);letter-spacing:.05em;margin-top:6px}
+.tile h3{margin:.2em 0 .25em;font-size:1.12rem}
+.tile p{margin:0;color:var(--sub);font-size:.9rem}
+.tile .go{margin-top:10px;font-size:.82rem;font-weight:700;color:var(--indigo)}
+.full{grid-column:1 / -1;background:linear-gradient(135deg,#f5f3ff,#eef2ff);border-color:#e0ddfb}
+.toolbox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;
+  margin-top:18px;box-shadow:var(--shadow)}
+.toolbox h3{margin:.1em 0 .3em;font-size:1.12rem}
+code{background:#eef2ff;border-radius:5px;padding:2px 7px;font-size:.9em}
+.note{color:var(--sub);font-size:.86rem}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.hero h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div style="max-width:920px;margin:0 auto">
+    <div class="kic">謎の国家 RAG ・ 教材ショーケース</div>
+    <h1>RAG の「似ている」を、見て・触って理解する</h1>
+    <p>架空の国家の法体系（憲法〜倫理指針＋1,206 判例）＋物語 35 話を題材に、
+       埋め込みベクトルがどう「意味」を捉えるかを、図解と実データで体感できる教材集です。</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <p class="lead">📚 まずはここから ― おすすめの読む順</p>
+  <p class="note">「①概念 → ②実データ → ③仕組み → ④実例 → ⑤解析デモ」の順に読むと、
+     専門用語が苦手でもスッと入れます。各カードをクリックで開きます。</p>
+
+  <div class="sec">理解する</div>
+  <div class="grid">
+    <a class="tile" href="embedding_explained.html">
+      <div class="ic">🧠</div><div class="step">STEP ① 概念</div>
+      <h3>RAG のベクトルの正体</h3>
+      <p>文字でも単語でもない ―「文の意味を 1 点にしたもの」。文字→トークン→平均→意味ベクトルの図解。</p>
+      <div class="go">開く →</div>
+    </a>
+    <a class="tile" href="embedding_real.html">
+      <div class="ic">🔬</div><div class="step">STEP ② 実データ</div>
+      <h3>実データで検証する</h3>
+      <p>トークンの実ベクトル・「平均＝文ベクトル」を電卓で確認・同じ「鬼」が文脈で変わる様子。</p>
+      <div class="go">開く →</div>
+    </a>
+  </div>
+
+  <div class="sec">仕組みと実例</div>
+  <div class="grid">
+    <a class="tile" href="infographic.html">
+      <div class="ic">🎨</div><div class="step">STEP ③ 仕組み</div>
+      <h3>ハイライトと軸抽出の仕組み</h3>
+      <p>類似度を「どの語が効いたか」に分解する仕組みと、768 次元から意味のある軸を取り出す方法。</p>
+      <div class="go">開く →</div>
+    </a>
+    <a class="tile" href="result.html">
+      <div class="ic">🍑</div><div class="step">STEP ④ 実例</div>
+      <h3>桃太郎 × 浦島太郎の実データ</h3>
+      <p>コサイン類似度 0.7271 が文章のどこから来たか ― 3 方式の色付けと軸抽出の実出力。</p>
+      <div class="go">開く →</div>
+    </a>
+    <a class="tile full" href="demo.html">
+      <div class="ic">📊</div><div class="step">STEP ⑤ 解析デモ（インタラクティブ）</div>
+      <h3>1,399 文書を解析するとこう見える</h3>
+      <p>書庫マップ（凡例トグル・ホバー）・K-means クラスタ・クエリ近傍・重複検出。
+         判例を消すと物語の島がくっきり浮きます。</p>
+      <div class="go">開く →</div>
+    </a>
+  </div>
+
+  <div class="toolbox">
+    <h3>🔬 自分で触る ― 解析ツール</h3>
+    <p class="note" style="margin-bottom:8px">図解で理解したら、実際に任意のテキスト・質問で動かせます（Ollama 不要）。</p>
+    <p style="margin:0"><code>./run_tool.sh</code> &nbsp;または&nbsp; <code>streamlit run highlight_tool.py</code><br>
+    <span class="note">メイン UI（<code>streamlit run app.py</code>）の「類似度＆解析」ページからも同じ画面が使えます。</span></p>
+  </div>
+
+  <p class="note" style="text-align:center;margin-top:26px">
+    すべて paraphrase-multilingual-mpnet-base-v2（768次元）の実出力に基づく自己完結 HTML。オフラインで開けます。</p>
+</div>
+</body>
+</html>

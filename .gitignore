@@ -44,3 +44,9 @@ logs/security/
 
 # Runtime logs (e.g. streamlit.log)
 logs/*.log
+
+# Local scratch artifacts (Playwright captures, screenshots, throwaway demos)
+.playwright-mcp/
+/highlight_demo.html
+/line_report.png
+/tool_view.png

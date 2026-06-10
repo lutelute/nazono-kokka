@@ -34,11 +34,12 @@ logger = logging.getLogger(__name__)
 
 PAGE_CHAT = "チャット"
 PAGE_VISUALIZATION = "ベクトル可視化"
+PAGE_ANALYSIS = "類似度＆解析"
 PAGE_SETTINGS = "設定"
 PAGE_TESTCASES = "テストケース"
 PAGE_COMPARISON = "精度比較"
 
-PAGES = [PAGE_CHAT, PAGE_VISUALIZATION, PAGE_SETTINGS, PAGE_TESTCASES, PAGE_COMPARISON]
+PAGES = [PAGE_CHAT, PAGE_VISUALIZATION, PAGE_ANALYSIS, PAGE_SETTINGS, PAGE_TESTCASES, PAGE_COMPARISON]
 
 
 # ---------------------------------------------------------------------------
@@ -171,6 +172,8 @@ def render_page(page: str) -> None:
         _render_chat_placeholder()
     elif page == PAGE_VISUALIZATION:
         _render_visualization_placeholder()
+    elif page == PAGE_ANALYSIS:
+        _render_analysis_page()
     elif page == PAGE_SETTINGS:
         _render_settings_placeholder()
     elif page == PAGE_TESTCASES:
@@ -191,6 +194,13 @@ def _render_visualization_placeholder() -> None:
     from ui.visualization_page import render_visualization_page
 
     render_visualization_page()
+
+
+def _render_analysis_page() -> None:
+    """Render the similarity & analysis page (delegates to ui.analysis_page)."""
+    from ui.analysis_page import render_analysis_page
+
+    render_analysis_page()
 
 
 def _render_settings_placeholder() -> None:
