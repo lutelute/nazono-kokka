@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAGのベクトルの正体 ― 結局なにベクトル？</title>
+<style>
+:root{--ink:#1e2330;--sub:#5b6478;--line:#e6e9f2;--bg:#f4f6fb;--card:#fff;
+  --shadow:0 10px 36px -14px rgba(30,30,80,.22);--indigo:#6366f1;--axis:#8b5cf6;
+  --sim:#ef4444;--dif:#3b82f6;--ok:#10b981;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.75;
+  background-image:radial-gradient(900px 500px at 85% -8%,rgba(139,92,246,.08),transparent),
+   radial-gradient(800px 460px at -8% 6%,rgba(239,68,68,.06),transparent);}
+.wrap{max-width:840px;margin:0 auto;padding:0 18px 70px}
+.hero{padding:44px 0 6px;text-align:center}
+.hero .kic{font-size:.78rem;letter-spacing:.18em;color:var(--axis);font-weight:700}
+.hero h1{font-size:1.95rem;margin:.2em 0 .1em}
+.hero p{color:var(--sub);max-width:600px;margin:8px auto 0}
+.verdict{background:linear-gradient(135deg,#1a1f44,#3b1d6e);color:#fff;border-radius:20px;
+  padding:26px;text-align:center;margin:18px 0;box-shadow:var(--shadow)}
+.verdict .big{font-size:1.7rem;font-weight:800;letter-spacing:.02em}
+.verdict .big em{font-style:normal;background:linear-gradient(120deg,#fca5a5,#c4b5fd);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.verdict p{color:#c9d0f0;margin:8px 0 0;font-size:.96rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+  padding:22px 24px 26px;margin:16px 0;box-shadow:var(--shadow)}
+.step{font-size:.74rem;font-weight:800;color:var(--indigo);letter-spacing:.06em}
+.card h2{margin:.15em 0 .35em;font-size:1.28rem}
+.note{color:var(--sub);font-size:.92rem}
+table.vd{border-collapse:separate;border-spacing:0;width:100%;margin-top:6px;font-size:.95rem;
+  border-radius:12px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+table.vd th,table.vd td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}
+table.vd th{background:linear-gradient(#f6f7fb,#eef0f7);font-weight:700;font-size:.82rem;color:#46506a}
+table.vd tr:last-child td{border-bottom:none}
+.j{font-weight:800;font-size:1.1rem}.j.no{color:#cbd2e0}.j.mid{color:#f59e0b}.j.yes{color:var(--ok)}
+/* pipeline */
+.pipe{display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0}
+.txtbox{background:#eef2ff;border:1px solid #d7dcf5;border-radius:10px;padding:9px 16px;font-weight:700}
+.arrow{color:var(--sub);font-size:.82rem;margin:2px 0}
+.toks{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tokcol{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tok{background:#fff;border:1.5px solid var(--indigo);color:#3a3f8f;border-radius:8px;
+  padding:3px 9px;font-weight:700;font-size:.95rem}
+.vec{display:inline-flex;align-items:flex-end;gap:1.5px;height:30px}
+.vec i{display:inline-block;width:3.5px;border-radius:1px}
+.sentvec{display:inline-flex;align-items:flex-end;gap:2px;height:40px;
+  background:#fff7f0;border:1.5px solid var(--sim);border-radius:10px;padding:5px 10px}
+.sentvec i{width:5px;border-radius:1px;background:var(--sim)}
+.star{font-weight:800;color:var(--sim)}
+.callout{border-left:4px solid var(--ok);background:#ecfdf5;border-radius:0 10px 10px 0;
+  padding:10px 14px;margin:12px 0;font-size:.92rem}
+.map2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcff}
+.mini b{font-size:.92rem}
+.fig{display:flex;justify-content:center;margin:10px 0}
+@media(max-width:600px){.map2{grid-template-columns:1fr}.hero h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="kic">謎の国家 RAG ・ 図解</div>
+    <h1>RAGのベクトルの正体</h1>
+    <p>文字？ 単語？ トークン？ 意味？ 長さ？ ― 結局なにを表しているのかを1枚で整理します。</p>
+  </div>
+
+  <div class="verdict">
+    <div class="big">結局は <em>意味ベクトル</em></div>
+    <p>「文ぜんたいの意味」を 768次元空間の1点で表したもの。似た意味の文ほど近い点になる。</p>
+  </div>
+
+  <div class="card">
+    <div class="step">CHECK ・ 4つの候補</div>
+    <h2>どれが正解？</h2>
+    <table class="vd">
+      <tr><th>候補</th><th>判定</th><th>理由</th></tr>
+      <tr><td>文字ベクトル</td><td class="j no">✕</td><td>文字単位ではない。サブワードで処理するが、文字の“形”でなく意味を持つ</td></tr>
+      <tr><td>単語ベクトル</td><td class="j mid">△</td><td>途中はトークン単位。ただし昔の word2vec の「1単語＝固定の1ベクトル」とは違い<b>文脈で変わる</b></td></tr>
+      <tr><td>トークンベクトル</td><td class="j mid">△</td><td>“途中段階”。各トークンに768次元。でも検索で使うのは<b>これを平均した文ベクトル</b></td></tr>
+      <tr><td><b>意味ベクトル</b></td><td class="j yes">◎</td><td><b>これが本質。</b>文の意味を1点に。桃太郎と浦島太郎が近い(0.73)のもこのため</td></tr>
+      <tr><td>長さベクトル</td><td class="j no">✕</td><td>文の長さは表さない。コサイン類似度は<b>向きだけ</b>見て長さを捨てる</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="step">HOW ・ 作られ方</div>
+    <h2>文字 → トークン → 文脈つき意味 → 平均 → 文ベクトル</h2>
+    <p class="note">最終的な「意味ベクトル」は、いきなりできるのではなく次の流れで作られます。</p>
+    <div class="pipe">
+      <div class="txtbox">「桃太郎は鬼を退治した」</div>
+      <div class="arrow">▼ ① トークン化（日本語は細かく分割）</div>
+      <div class="toks" id="toks"></div>
+      <div class="arrow">▼ ② 各トークンを768次元ベクトルに（Transformerが“周りの語を見て”決める＝文脈依存）</div>
+      <div class="arrow">▼ ③ ぜんぶ平均する（mean-pooling）</div>
+      <div class="sentvec" id="sentvec"></div>
+      <div class="arrow"><span class="star">★ これが文ぜんたいの意味ベクトル＝RAGの検索単位</span></div>
+    </div>
+    <div class="callout"><b>②が平均で③になる</b>＝この足し算の構造があるからこそ、文の類似度を
+      「どのトークンがどれだけ効いたか」に<b>厳密に分解</b>できました（ハイライト機能の正体）。</div>
+  </div>
+
+  <div class="card">
+    <div class="step">WHY △ ・ 単語ベクトルとの違い</div>
+    <h2>同じ「鬼」でも、文によってベクトルが変わる</h2>
+    <p class="note">昔の単語ベクトル(word2vec)は「鬼＝いつも同じ1点」。今のモデルは<b>文脈依存</b>で、
+      周りの語によって少しずつ違う点になります。だから「単語ベクトル」とは言い切れません。</p>
+    <div class="fig">
+      <svg viewBox="0 0 420 120" width="100%" style="max-width:420px">
+        <text x="10" y="22" font-size="12" fill="#5b6478">「鬼を退治」の鬼</text>
+        <circle cx="150" cy="40" r="7" fill="#ef4444"/>
+        <text x="10" y="78" font-size="12" fill="#5b6478">「鬼に金棒」の鬼</text>
+        <circle cx="190" cy="80" r="7" fill="#ef4444" opacity="0.6"/>
+        <line x1="150" y1="40" x2="190" y2="80" stroke="#f59e0b" stroke-dasharray="3 3"/>
+        <text x="210" y="62" font-size="11" fill="#f59e0b">文脈でズレる</text>
+        <text x="260" y="30" font-size="11" fill="#94a3b8">※word2vecなら同じ1点に固定</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">MAP ・ このツールでの対応</div>
+    <h2>あなたが見てきた2種類のベクトル</h2>
+    <div class="map2">
+      <div class="mini"><b>🎨 ハイライトの「トークン寄与」</b>
+        <p class="note">＝②のトークンベクトル（語ごとの意味）。文の類似度への効き具合を色にした。</p></div>
+      <div class="mini"><b>🗺️🔍🎯 マップ・検索・クラスタの「点」</b>
+        <p class="note">＝③の文ベクトル（文の意味）。近い点＝似た意味。物語が島になるのもこれ。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">LENGTH ✕ ・ 「長さ」について</div>
+    <h2>測っているのは“長さ”ではなく“向き”</h2>
+    <p class="note">ベクトルには長さ(ノルム)もありますが、RAGのコサイン類似度は長さを1にそろえ、
+      <b>向きの近さ</b>だけを比べます。だから「長い文／短い文」ではなく「意味の向きが近いか」で測ります。</p>
+    <div class="fig">
+      <svg viewBox="0 0 360 150" width="100%" style="max-width:360px">
+        <line x1="40" y1="130" x2="300" y2="130" stroke="#cbd2e0"/>
+        <line x1="40" y1="130" x2="40" y2="20" stroke="#cbd2e0"/>
+        <line x1="40" y1="130" x2="270" y2="45" stroke="var(--sim)" stroke-width="3" marker-end="url(#a1)"/>
+        <line x1="40" y1="130" x2="250" y2="62" stroke="var(--dif)" stroke-width="3" marker-end="url(#a2)"/>
+        <path d="M 95 113 A 60 60 0 0 0 88 100" fill="none" stroke="#888"/>
+        <text x="100" y="108" font-size="13" fill="#555">θ</text>
+        <text x="120" y="148" font-size="11" fill="#5b6478">向き(角度θ)が近い＝意味が近い。長さは無視</text>
+        <defs>
+          <marker id="a1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--sim)"/></marker>
+          <marker id="a2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--dif)"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <p class="note" style="text-align:center;margin-top:24px">
+    ひとことで：<b>文字 → トークン →（文脈つきの）トークン意味 → 平均 → 文の意味ベクトル</b>。
+    最後の「文の意味ベクトル」がRAGの主役です。</p>
+</div>
+
+<script>
+// 768次元を8本のバーで象徴。各トークンは少し違うパターン（文脈依存の表現）
+const toks = ["桃","太郎","は","鬼","を","退治","した"];
+const COLS = ["#6366f1","#8b5cf6","#06b6d4","#ef4444","#0ea5e9","#10b981","#f59e0b"];
+const patt = toks.map((_,i)=>Array.from({length:8},(__,j)=>0.3+0.6*Math.abs(Math.sin(i*1.7+j*0.9))));
+let html="";
+patt.forEach((v,i)=>{
+  let bars=v.map(h=>`<i style="height:${(h*28).toFixed(0)}px;background:${COLS[i]}"></i>`).join("");
+  html+=`<div class="tokcol"><span class="tok">${toks[i]}</span><span class="vec">${bars}</span></div>`;
+});
+document.getElementById("toks").innerHTML=html;
+// 平均 = 文ベクトル
+const avg=Array.from({length:8},(_,j)=>patt.reduce((s,v)=>s+v[j],0)/patt.length);
+document.getElementById("sentvec").innerHTML=avg.map(h=>`<i style="height:${(h*30).toFixed(0)}px"></i>`).join("");
+</script>
+</body>
+</html>

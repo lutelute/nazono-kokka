@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>類似度＆解析ツール ― 実データデモ</title>
+<style>
+:root{--ink:#1e2330;--sub:#5b6478;--line:#e6e9f2;--bg:#f4f6fb;--card:#fff;
+  --shadow:0 10px 36px -14px rgba(30,30,80,.22);--indigo:#6366f1;--axis:#8b5cf6;}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.7;
+  background-image:radial-gradient(900px 500px at 85% -8%,rgba(139,92,246,.08),transparent),
+   radial-gradient(800px 460px at -8% 6%,rgba(239,68,68,.06),transparent);}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 70px}
+.hero{padding:42px 0 6px;text-align:center}
+.hero .kic{font-size:.78rem;letter-spacing:.18em;color:var(--axis);font-weight:700}
+.hero h1{font-size:1.85rem;margin:.2em 0 .1em}
+.hero p{color:var(--sub);max-width:620px;margin:8px auto 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+  padding:22px 24px 26px;margin:18px 0;box-shadow:var(--shadow)}
+.tag{font-size:.74rem;font-weight:800;color:var(--indigo);letter-spacing:.06em}
+.card h2{margin:.15em 0 .3em;font-size:1.3rem}
+.note{color:var(--sub);font-size:.9rem}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.legend span{display:inline-flex;align-items:center;gap:5px;font-size:.8rem}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+table{border-collapse:separate;border-spacing:0;width:100%;margin-top:10px;font-size:.88rem;
+  border-radius:11px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:linear-gradient(#f6f7fb,#eef0f7);font-weight:700;font-size:.78rem;color:#46506a}
+tr:last-child td{border-bottom:none}
+.q{font-weight:700;margin:14px 0 2px;color:#374151}
+.bar{height:9px;border-radius:5px;background:linear-gradient(90deg,var(--indigo),var(--axis));display:inline-block;vertical-align:middle}
+.callout{border-left:4px solid #10b981;background:#ecfdf5;border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="kic">謎の国家 RAG ・ ツール実データデモ</div>
+    <h1>1,399文書を解析するとこう見える</h1>
+    <p>highlight_tool.py の解析タブを、実際の書庫データで動かした結果です。
+       物語（昔話/童話）と法律・判例が、埋め込み空間でどう分かれるかが見えます。</p>
+  </div>
+
+  <div class="card">
+    <span class="tag">🗺️ 書庫マップ（PCA 2D）</span>
+    <h2>物語は法律・判例から離れた「島」になる</h2>
+    <p class="note">全1,399文書を768次元→2Dに圧縮（各グループからサンプル表示）。色＝グループ。
+      右上に物語（昔話/童話）と法令、中央〜左下に判例が分布します。</p>
+    <div id="scatter"></div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="card">
+    <span class="tag">🎯 クラスタ自動発見（K-means, K=8）</span>
+    <h2>メタデータ無しでも、物語は1つのクラスタにまとまる</h2>
+    <p class="note">ベクトルの近さだけで8グループに自動分割。人手ラベルがどのクラスタに入ったか：</p>
+    <div id="cluster"></div>
+    <div class="callout" id="cluster-note"></div>
+  </div>
+
+  <div class="card">
+    <span class="tag">🔍 クエリ近傍探索</span>
+    <h2>質問を投げると意味の近い文書が返る</h2>
+    <p class="note">クエリを768次元に埋め込み、コサイン類似度で上位5件。物語の質問には物語が、
+      法律の質問には条文が返るのが分かります。</p>
+    <div id="query"></div>
+  </div>
+
+  <div class="card">
+    <span class="tag">🔗 重複・冗長検出</span>
+    <h2>似すぎる文書ペア（cos ≥ 0.93）</h2>
+    <p class="note">判例は定型文が多く、ほぼ同一のチャンクが見つかります（RAGの検索品質チェックに有用）。</p>
+    <div id="dup"></div>
+  </div>
+
+  <p class="note" style="text-align:center;margin-top:24px">
+    すべて実データ（全1,399チャンク／paraphrase-multilingual-mpnet-base-v2）の出力。
+    インタラクティブ版は <code>streamlit run highlight_tool.py</code> で。</p>
+</div>
+
+<script>
+const DATA = {"n":1399,"counts":{"世界童話":15,"倫理指針":13,"刑法":37,"判例 (刑事)":486,"判例 (憲法)":210,"判例 (民事)":510,"憲法":17,"文化規制":13,"日本昔話":20,"民法":39,"法令":10,"行政法":29},
+"map":[{"x":1.43,"y":0.02,"g":"世界童話"},{"x":1.35,"y":-0.1,"g":"世界童話"},{"x":1.41,"y":0.22,"g":"世界童話"},{"x":1.13,"y":0.11,"g":"世界童話"},{"x":1.44,"y":0.15,"g":"世界童話"},{"x":1.35,"y":0.33,"g":"世界童話"},{"x":1.18,"y":0.11,"g":"世界童話"},{"x":1.4,"y":0.1,"g":"世界童話"},{"x":1.17,"y":0.41,"g":"倫理指針"},{"x":1.49,"y":0.23,"g":"倫理指針"},{"x":1.87,"y":0.1,"g":"倫理指針"},{"x":1.6,"y":-0.07,"g":"倫理指針"},{"x":1.61,"y":0.31,"g":"倫理指針"},{"x":1.59,"y":-0.02,"g":"倫理指針"},{"x":1.47,"y":0.19,"g":"倫理指針"},{"x":1.49,"y":-0.19,"g":"倫理指針"},{"x":0.68,"y":-0.02,"g":"刑法"},{"x":0.89,"y":-0.19,"g":"刑法"},{"x":0.95,"y":-0.18,"g":"刑法"},{"x":0.86,"y":-0.39,"g":"刑法"},{"x":1.11,"y":-0.2,"g":"刑法"},{"x":0.8,"y":-0.25,"g":"刑法"},{"x":0.75,"y":-0.08,"g":"刑法"},{"x":0.81,"y":0.17,"g":"刑法"},{"x":-0.02,"y":-0.34,"g":"判例 (刑事)"},{"x":-0.14,"y":-0.67,"g":"判例 (刑事)"},{"x":-0.14,"y":-0.6,"g":"判例 (刑事)"},{"x":-0.16,"y":-0.59,"g":"判例 (刑事)"},{"x":0.06,"y":-0.85,"g":"判例 (刑事)"},{"x":-0.24,"y":-0.34,"g":"判例 (刑事)"},{"x":-0.22,"y":-0.43,"g":"判例 (刑事)"},{"x":-0.1,"y":-0.44,"g":"判例 (刑事)"},{"x":0.34,"y":-0.09,"g":"判例 (憲法)"},{"x":0.45,"y":0.01,"g":"判例 (憲法)"},{"x":0.46,"y":-0.25,"g":"判例 (憲法)"},{"x":0.63,"y":-0.15,"g":"判例 (憲法)"},{"x":0.67,"y":0.04,"g":"判例 (憲法)"},{"x":0.61,"y":-0.06,"g":"判例 (憲法)"},{"x":0.69,"y":-0.09,"g":"判例 (憲法)"},{"x":0.71,"y":-0.37,"g":"判例 (憲法)"},{"x":-0.41,"y":0.62,"g":"判例 (民事)"},{"x":-0.36,"y":0.67,"g":"判例 (民事)"},{"x":-0.32,"y":0.64,"g":"判例 (民事)"},{"x":-0.52,"y":0.48,"g":"判例 (民事)"},{"x":-0.36,"y":0.65,"g":"判例 (民事)"},{"x":-0.25,"y":0.43,"g":"判例 (民事)"},{"x":-0.06,"y":0.39,"g":"判例 (民事)"},{"x":-0.56,"y":0.44,"g":"判例 (民事)"},{"x":1.8,"y":-0.21,"g":"憲法"},{"x":0.79,"y":-0.19,"g":"憲法"},{"x":1.54,"y":-0.11,"g":"憲法"},{"x":1.64,"y":-0.02,"g":"憲法"},{"x":1.78,"y":-0.16,"g":"憲法"},{"x":1.66,"y":-0.09,"g":"憲法"},{"x":1.77,"y":0.16,"g":"憲法"},{"x":1.39,"y":-0.11,"g":"憲法"},{"x":1.34,"y":0.1,"g":"文化規制"},{"x":1.4,"y":-0.06,"g":"文化規制"},{"x":1.61,"y":-0.23,"g":"文化規制"},{"x":1.61,"y":-0.28,"g":"文化規制"},{"x":1.38,"y":-0.02,"g":"文化規制"},{"x":1.43,"y":-0.08,"g":"文化規制"},{"x":1.53,"y":-0.14,"g":"文化規制"},{"x":1.73,"y":-0.25,"g":"文化規制"},{"x":1.26,"y":0.2,"g":"日本昔話"},{"x":0.78,"y":0.2,"g":"日本昔話"},{"x":1.46,"y":0.54,"g":"日本昔話"},{"x":1.23,"y":0.38,"g":"日本昔話"},{"x":0.67,"y":0.02,"g":"日本昔話"},{"x":0.62,"y":0.23,"g":"日本昔話"},{"x":1.18,"y":-0.13,"g":"日本昔話"},{"x":0.59,"y":0.2,"g":"日本昔話"},{"x":0.89,"y":0.93,"g":"民法"},{"x":1.31,"y":0.46,"g":"民法"},{"x":1.05,"y":0.7,"g":"民法"},{"x":1.11,"y":0.74,"g":"民法"},{"x":1.47,"y":0.43,"g":"民法"},{"x":1.31,"y":0.84,"g":"民法"},{"x":0.88,"y":0.46,"g":"民法"},{"x":1.04,"y":0.82,"g":"民法"},{"x":0.86,"y":0.62,"g":"法令"},{"x":1.02,"y":0.53,"g":"法令"},{"x":1.41,"y":0.78,"g":"法令"},{"x":1.25,"y":0.44,"g":"法令"},{"x":1.15,"y":0.24,"g":"法令"},{"x":1.17,"y":0.43,"g":"法令"},{"x":1.57,"y":0.63,"g":"法令"},{"x":1.23,"y":-0.31,"g":"法令"},{"x":1.05,"y":0.44,"g":"行政法"},{"x":1.89,"y":0.2,"g":"行政法"},{"x":1.48,"y":0.41,"g":"行政法"},{"x":0.67,"y":0.49,"g":"行政法"},{"x":1.16,"y":0.69,"g":"行政法"},{"x":1.5,"y":0.22,"g":"行政法"},{"x":1.58,"y":0.39,"g":"行政法"},{"x":1.64,"y":0.42,"g":"行政法"}],
+"cross":{"世界童話":{"1":15},"日本昔話":{"1":20},"倫理指針":{"4":13},"文化規制":{"4":13},"刑法":{"2":1,"4":4,"6":32},"民法":{"2":1,"4":5,"6":33},"判例 (刑事)":{"3":375,"5":111},"判例 (憲法)":{"2":209,"5":1},"判例 (民事)":{"0":106,"7":404},"憲法":{"2":1,"4":15,"6":1},"法令":{"4":7,"6":3},"行政法":{"2":1,"4":24,"6":4}},
+"dup":[{"s":0.999,"a":"判例 (民事)","b":"判例 (民事)","ap":"遠藤陽子 v. 近藤健太 CIVIL-201…","bp":"遠藤陽子 v. 近藤健太 CIVIL-201…"},{"s":0.998,"a":"判例 (民事)","b":"判例 (民事)","ap":"東方不動産 v. 風雲堂 CIVIL-201…","bp":"東方不動産 v. 風雲堂 CIVIL-201…"},{"s":0.997,"a":"判例 (民事)","b":"判例 (民事)","ap":"青木純子 v. 遠藤三郎 CIVIL-201…","bp":"藤井三郎 v. 青木純子 CIVIL-201…"},{"s":0.996,"a":"判例 (刑事)","b":"判例 (刑事)","ap":"国家 v. 藤田信四 CRIM-2020…","bp":"国家 v. 坂本進 CRIM-2021-02…"},{"s":0.996,"a":"判例 (民事)","b":"判例 (民事)","ap":"福田恵子 v. 後藤翔太 CIVIL-201…","bp":"福田裕子 v. 後藤陽子 CIVIL-201…"},{"s":0.996,"a":"判例 (刑事)","b":"判例 (刑事)","ap":"国家 v. 岡田幸六 CRIM-2022…","bp":"国家 v. 原田純 CRIM-2024-02…"},{"s":0.996,"a":"判例 (民事)","b":"判例 (民事)","ap":"坂本誠 v. 藤田花子 CIVIL-2022…","bp":"近藤花子 v. 池田由美 CIVIL-202…"}],
+"query":{"鬼を退治する話":[{"s":0.65,"g":"日本昔話","p":"悪い狸を飼い兎が懲らしめる（かちかち山）"},{"s":0.587,"g":"世界童話","p":"森のお菓子の家と魔女（ヘンゼルとグレーテル）"},{"s":0.575,"g":"世界童話","p":"百年の眠りと茨の城（眠れる森の美女）"},{"s":0.571,"g":"日本昔話","p":"ねずみの国でもてなされる（おむすびころりん）"},{"s":0.535,"g":"日本昔話","p":"鬼の宴で踊りこぶを取る（こぶとり爺さん）"}],"亀を助ける物語":[{"s":0.709,"g":"日本昔話","p":"悪い狸を兎が懲らしめる（かちかち山）"},{"s":0.63,"g":"日本昔話","p":"茶釜が狸に変わり芸を見せる（ぶんぶく茶釜）"},{"s":0.625,"g":"日本昔話","p":"子蟹が仲間と猿に仕返し（さるかに合戦）"},{"s":0.565,"g":"日本昔話","p":"舌切り雀の恩返し"},{"s":0.53,"g":"世界童話","p":"醜いアヒルの子が白鳥に"}],"窃盗罪の量刑は？":[{"s":0.771,"g":"刑法","p":"第195条（昏酔強盗）"},{"s":0.727,"g":"刑法","p":"第203条（横領）5年以下…"},{"s":0.715,"g":"刑法","p":"第8条（刑の種類）"},{"s":0.681,"g":"刑法","p":"第148条（加重収賄）"},{"s":0.668,"g":"刑法","p":"第36条（共犯の離脱）"}]}};
+
+const COL = {"憲法":"#1f77b4","刑法":"#d62728","民法":"#2ca02c","行政法":"#9467bd",
+  "文化規制":"#ff7f0e","倫理指針":"#17becf","判例 (刑事)":"#e377c2","判例 (民事)":"#8c564b",
+  "判例 (憲法)":"#7f7f7f","日本昔話":"#ff5a5a","世界童話":"#3b82f6","法令":"#bcbd22"};
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+// --- 散布図 ---
+(function(){
+  const W=820,H=440,pad=34;
+  const xs=DATA.map.map(p=>p.x), ys=DATA.map.map(p=>p.y);
+  const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);
+  const X=x=>pad+(x-xmin)/(xmax-xmin)*(W-2*pad);
+  const Y=y=>H-pad-(y-ymin)/(ymax-ymin)*(H-2*pad);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:#fbfcff;border:1px solid #eee;border-radius:10px">`;
+  for(const p of DATA.map){
+    s+=`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="5" fill="${COL[p.g]||'#999'}" opacity="0.75"><title>${esc(p.g)}</title></circle>`;
+  }
+  s+=`</svg>`;
+  document.getElementById("scatter").innerHTML=s;
+  const seen=[...new Set(DATA.map.map(p=>p.g))];
+  document.getElementById("legend").innerHTML=seen.map(g=>
+    `<span><span class="sw" style="background:${COL[g]||'#999'}"></span>${esc(g)} (${DATA.counts[g]})</span>`).join("");
+})();
+
+// --- クラスタ クロス集計 ---
+(function(){
+  const groups=Object.keys(DATA.cross);
+  const cls=[...new Set(groups.flatMap(g=>Object.keys(DATA.cross[g])))].sort((a,b)=>a-b);
+  let t=`<table><tr><th>人手ラベル</th>`+cls.map(c=>`<th>C${c}</th>`).join("")+`</tr>`;
+  for(const g of groups){
+    t+=`<tr><td><span class="sw" style="background:${COL[g]||'#999'}"></span>${esc(g)}</td>`;
+    for(const c of cls){const v=DATA.cross[g][c]||0;
+      t+=`<td style="background:${v?`rgba(99,102,241,${Math.min(0.6,v/200+0.12)})`:'transparent'};font-weight:${v?700:400}">${v||''}</td>`;}
+    t+=`</tr>`;
+  }
+  t+=`</table>`;
+  document.getElementById("cluster").innerHTML=t;
+  document.getElementById("cluster-note").innerHTML=
+    "👉 <b>世界童話(15)も日本昔話(20)も、まるごとクラスタ C1 に集まりました</b> ― "+
+    "メタデータを一切見ていないのに、K-means が「物語」という意味のまとまりを自力で発見しています。"+
+    "判例(刑事)はC3/C5、判例(民事)はC0/C7に分かれ、内容のサブ構造も見えます。";
+})();
+
+// --- クエリ ---
+(function(){
+  let h="";
+  for(const[q,rows]of Object.entries(DATA.query)){
+    h+=`<div class="q">Q：「${esc(q)}」</div><table><tr><th>類似度</th><th>グループ</th><th>内容</th></tr>`;
+    for(const r of rows){
+      h+=`<tr><td><span class="bar" style="width:${(r.s*70).toFixed(0)}px"></span> ${r.s.toFixed(3)}</td>`+
+         `<td><span class="sw" style="background:${COL[r.g]||'#999'}"></span>${esc(r.g)}</td><td>${esc(r.p)}</td></tr>`;
+    }
+    h+=`</table>`;
+  }
+  document.getElementById("query").innerHTML=h;
+})();
+
+// --- 重複 ---
+(function(){
+  let t=`<table><tr><th>類似度</th><th>文書A</th><th>文書B</th></tr>`;
+  for(const d of DATA.dup){
+    t+=`<tr><td><b>${d.s.toFixed(3)}</b></td><td>[${esc(d.a)}] ${esc(d.ap)}</td><td>[${esc(d.b)}] ${esc(d.bp)}</td></tr>`;
+  }
+  t+=`</table>`;
+  document.getElementById("dup").innerHTML=t;
+})();
+</script>
+</body>
+</html>

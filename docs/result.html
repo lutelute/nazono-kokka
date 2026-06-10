@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>実データの結果 ― 似ている箇所ハイライト & 軸抽出</title>
+<style>
+:root{
+  --ink:#1e2330; --sub:#5b6478; --line:#e6e9f2; --bg:#f4f6fb; --card:#fff;
+  --sim:#ef4444; --dif:#3b82f6; --axis:#8b5cf6; --indigo:#6366f1; --ok:#10b981;
+  --shadow:0 10px 36px -14px rgba(30,30,80,.22);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.7;
+  background-image:radial-gradient(900px 500px at 85% -8%, rgba(139,92,246,.08), transparent),
+    radial-gradient(800px 460px at -8% 6%, rgba(239,68,68,.06), transparent);}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 70px}
+.hero{padding:42px 0 6px;text-align:center}
+.hero .kic{font-size:.78rem;letter-spacing:.18em;color:var(--axis);font-weight:700}
+.hero h1{font-size:1.85rem;margin:.2em 0 .1em}
+.hero p{color:var(--sub);max-width:600px;margin:8px auto 0}
+.part{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;display:inline-block;padding:5px 14px;border-radius:999px;margin:34px 0 4px}
+.part.p1{background:linear-gradient(120deg,#ef4444,#f59e0b)}
+.part.p2{background:linear-gradient(120deg,#8b5cf6,#6366f1)}
+.part h2{display:inline;font-size:1.45rem;margin-left:12px;vertical-align:middle}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+  padding:22px 24px 26px;margin:16px 0;box-shadow:var(--shadow)}
+.card h3{margin:.1em 0 .2em;font-size:1.12rem}
+.tag{font-size:.74rem;font-weight:800;color:var(--indigo);letter-spacing:.04em}
+.note{color:var(--sub);font-size:.9rem}
+.cosbig{font-size:1.05rem;font-weight:800;color:var(--sim)}
+.box{border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:10px;
+  background:linear-gradient(#fff,#fbfcff);font-size:1.05rem;line-height:2.15}
+.cols{display:flex;gap:16px}.cols>div{flex:1;min-width:0}
+.lab{font-weight:700;margin:10px 0 4px;font-size:.92rem;color:#374151}
+.sent{border-left:4px solid #d7dbe6;padding:7px 11px;margin:5px 0;border-radius:9px}
+.badge{font-size:.71rem;font-weight:700;display:block;margin-top:2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.legend span{padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:600;color:#fff}
+table{border-collapse:separate;border-spacing:0;width:100%;margin-top:10px;font-size:.9rem;
+  border-radius:11px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+th,td{padding:7px 11px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:linear-gradient(#f6f7fb,#eef0f7);font-weight:700;font-size:.8rem;color:#46506a}
+tr:last-child td{border-bottom:none}
+sup{font-weight:800;font-size:.7em}
+.swatch{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.pca-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+.pca-name{width:50px;font-size:.82rem;color:var(--sub);font-weight:600;flex:none}
+.pca-track{flex:1;height:24px;background:#eef0f7;border-radius:7px;overflow:hidden}
+.pca-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--indigo),var(--axis))}
+.pca-pct{width:50px;font-weight:800;font-size:.88rem;flex:none}
+.cum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.cum div{background:linear-gradient(135deg,#f5f3ff,#eef2ff);border:1px solid #e6e3fb;
+  border-radius:13px;padding:13px;text-align:center}
+.cum b{display:block;font-size:1.5rem;font-weight:800;color:var(--axis)}
+.cum small{color:var(--sub);font-weight:600}
+.svgwrap{background:linear-gradient(135deg,#0f1530,#1a1f44);border-radius:14px;padding:10px;margin:8px 0}
+@media(max-width:640px){.cols{flex-direction:column}.cum{grid-template-columns:1fr}.hero h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="kic">謎の国家 RAG ・ 実データの結果</div>
+    <h1>実際にこう色が付きます</h1>
+    <p>概念図（infographic）の仕組みを、桃太郎 × 浦島太郎の実データに適用した結果です。
+       すべて実際の計算出力をそのまま描画しています。</p>
+  </div>
+
+  <div><span class="part p1">Part 1</span><h2>似ている箇所ハイライト</h2></div>
+  <div class="card">
+    <div class="tag">桃太郎 × 浦島太郎</div>
+    <h3>コサイン類似度 <span class="cosbig">0.7271</span> はどこから来たか</h3>
+    <div id="hl"></div>
+  </div>
+
+  <div><span class="part p2">Part 2</span><h2>768次元の軸抽出</h2></div>
+  <div class="card">
+    <div class="tag">PCA 説明分散比</div>
+    <h3>情報が乗っている軸は少数 ― 上位20軸で全分散の52%</h3>
+    <p class="note">各主成分＝分散が最大になる直交方向（意味のある軸）。その固有値がその方向の分散。</p>
+    <div id="pca"></div>
+    <div class="cum" id="cum"></div>
+  </div>
+  <div class="card">
+    <div class="tag">概念軸『法令 ⇄ 判例』</div>
+    <h3>2グループの重心差ベクトルに全1,354文書を射影</h3>
+    <p class="note">● が各グループの平均、横棒が ±標準偏差（軸上の広がり）。法令系が右、判例3種が0付近に分離。</p>
+    <div class="svgwrap"><div id="axis"></div></div>
+    <table id="axistbl"></table>
+  </div>
+
+  <p class="note" style="text-align:center;margin-top:26px">
+    実データ（全1,354チャンク／paraphrase-multilingual-mpnet-base-v2）の出力をそのまま描画。</p>
+</div>
+
+<script>
+const DATA = {"cos":0.7271,"vmax":0.00339,
+"heat_a":[["むかし",0.00269,false],["むかし",0.00269,false],["、",-0.00104,true],["おばあ",0.00079,false],["さん",-0.00029,false],["が",-0.00191,false],["川",-0.00045,false],["で",-0.00191,false],["洗濯",-0.0008,false],["を",-0.00134,false],["していると",-0.00047,false],["大きな",0.00118,false],["桃",-0.00074,false],["が",-0.00191,false],["流れ",-0.00041,false],["てきた",0.00114,false],["。",-0.00157,true],["桃",-0.00074,false],["を",-0.00134,false],["割る",0.00046,false],["と",-0.00139,false],["元気",0.00149,false],["な",-0.00138,false],["男の子",0.00073,false],["が",-0.00191,false],["現れ",0.00065,false],["た",-0.00163,false],["。",-0.00157,true],["男の子",0.00073,false],["は",-0.00155,false],["桃",-0.00074,false],["太郎",0.00339,false],["と",-0.00139,false],["名付け",0.00088,false],["られ",-0.00078,false],["、",-0.00104,true],["やがて",0.0008,false],["鬼",-0.00075,false],["ヶ",-0.00045,false],["島",0.00012,false],["へ",-0.00114,false],["鬼",-0.00075,false],["退治",0.00216,false],["の",-0.00171,false],["旅",0.00149,false],["に",-0.00149,false],["出た",0.00076,false],["。",-0.00157,true],["イ",-0.00115,false],["ヌ",-0.00139,false],["・",-0.00157,true],["サル",0.0011,false],["・",-0.00157,true],["キ",-0.00045,false],["ジ",-0.00067,false],["を",-0.00134,false],["家来",0.00126,false],["に",-0.00149,false],["して",-0.00139,false],["鬼",-0.00075,false],["を",-0.00134,false],["倒し",0.00064,false],["、",-0.00104,true],["宝物",0.00146,false],["を",-0.00134,false],["持ち帰っ",0.00112,false],["た",-0.00163,false],["。",-0.00157,true]],
+"heat_b":[["むかし",0.00213,false],["むかし",0.00213,false],["、",-0.00128,true],["浦",-0.0003,false],["島",0.0003,false],["太郎",0.00316,false],["という",-0.00114,false],["若い",0.00073,false],["漁師",0.00149,false],["が",-0.00191,false],["いた",-0.00056,false],["。",-0.0018,true],["ある",-0.00138,false],["日",-0.00107,false],["、",-0.00128,true],["子供",0.0007,false],["たち",-0.00139,false],["に",-0.00149,false],["いじめ",0.00095,false],["られ",-0.00078,false],["てい",-0.00154,false],["た",-0.00163,false],["亀",0.00031,false],["を",-0.00134,false],["助け",0.00112,false],["た",-0.00163,false],["。",-0.0018,true],["亀",0.00031,false],["の",-0.00171,false],["お",-0.0015,false],["礼",0.0009,false],["に",-0.00149,false],["竜",0.00046,false],["宮",-0.00017,false],["城",0.00041,false],["へ",-0.00114,false],["連れ",0.00057,false],["て",-0.00177,false],["行か",-0.00076,false],["れ",-0.00149,false],["、",-0.00128,true],["乙",-0.00045,false],["姫",0.00079,false],["様",-0.00083,false],["と",-0.00139,false],["楽しく",0.00104,false],["過ごし",0.00118,false],["た",-0.00163,false],["。",-0.0018,true],["玉",-0.00031,false],["手",-0.00114,false],["箱",0.00033,false],["を",-0.00134,false],["開ける",0.00076,false],["と",-0.00139,false],["白い",0.00064,false],["煙",-0.00031,false],["が",-0.00191,false],["出て",0.00038,false],["老人",0.00141,false],["に",-0.00149,false],["なっ",-0.00133,false],["て",-0.00177,false],["しまっ",-0.00107,false],["た",-0.00163,false],["。",-0.0018,true]],
+"sent":[["むかしむかし、おばあさんが川で洗濯をしていると大きな桃が流れてきた。","むかしむかし、浦島太郎という若い漁師がいた。",0.732,0],["桃を割ると元気な男の子が現れた。","むかしむかし、浦島太郎という若い漁師がいた。",0.47,0],["男の子は桃太郎と名付けられ、やがて鬼ヶ島へ鬼退治の旅に出た。","亀のお礼に竜宮城へ連れて行かれ、乙姫様と楽しく過ごした。",0.52,2],["イヌ・サル・キジを家来にして鬼を倒し、宝物を持ち帰った。","亀のお礼に竜宮城へ連れて行かれ、乙姫様と楽しく過ごした。",0.52,2]],
+"sent_b":["むかしむかし、浦島太郎という若い漁師がいた。","ある日、子供たちにいじめられていた亀を助けた。","亀のお礼に竜宮城へ連れて行かれ、乙姫様と楽しく過ごした。","玉手箱を開けると白い煙が出て老人になってしまった。"],
+"pairs":[["太郎","太郎",0.671],["大きな","若い",0.621],["名付け","助け",0.62],["おばあ","おばあ",0.609],["むかし","むかし",0.524],["鬼","亀",0.519],["旅","竜宮",0.484],["桃","亀",0.47]]};
+const PCA_RATIO=[0.087,0.060,0.045,0.038,0.033];
+const PCA_CUM=[[5,0.263],[10,0.388],[20,0.523]];
+const AXIS_GROUPS=[["法令",0.227,0.060,512],["倫理指針",0.181,0.057,120],["文化規制",0.155,0.054,83],
+  ["判例(民事)",-0.012,0.041,219],["判例(刑事)",-0.020,0.044,216],["判例(憲法)",-0.045,0.054,204]];
+const PALETTE=["#6366f1","#f59e0b","#10b981","#ef4444","#8b5cf6","#0ea5e9","#ec4899","#06b6d4","#84cc16","#6366f1"];
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+function heatColor(v,vmax){let t=Math.max(-1,Math.min(1,v/vmax));
+  return t>=0?`rgba(239,68,68,${(0.10+0.66*t).toFixed(3)})`:`rgba(59,130,246,${(0.10+0.62*Math.abs(t)).toFixed(3)})`;}
+function renderHeat(rows){let h="";for(const[w,c,p]of rows){if(w==="▁"||w==="")continue;
+  if(p){h+=`<span style="color:#c2c7d6">${esc(w)}</span>`;if(w==="。")h+="<br>";continue;}
+  h+=`<span style="background:${heatColor(c,DATA.vmax)};border-radius:5px;padding:2px 2px">${esc(w)}</span>`;}
+  return `<div class="box">${h}</div>`;}
+function block(s,color,badge){const bg=color?hexA(color,0.16):"#f7f8fc";
+  return `<div class="sent" style="background:${bg};border-left-color:${color||'#d7dbe6'}">${esc(s)}
+    <span class="badge" style="color:${color||'#9aa1b3'}">${esc(badge)}</span></div>`;}
+function renderSent(){const used=new Set();const a=[];
+  for(const[s,b,sc,j]of DATA.sent){const on=sc>=0.40;if(on)used.add(j);
+    a.push(block(s,on?PALETTE[j%10]:null,on?`→ B文${j+1}　類似度 ${sc.toFixed(2)}`:`対応弱 ${sc.toFixed(2)}`));}
+  const bb=DATA.sent_b.map((s,j)=>block(s,used.has(j)?PALETTE[j%10]:null,`文${j+1}`));
+  return `<div class="cols"><div><p class="lab">🍑 桃太郎</p>${a.join("")}</div>
+    <div><p class="lab">🐢 浦島太郎</p>${bb.join("")}</div></div>`;}
+function pairLine(rows,targets){const seen={};let h="";for(const[w,c,p]of rows){if(w==="▁"||w==="")continue;
+  const k=targets.indexOf(w);if(k>=0&&seen[k]===undefined){seen[k]=1;const col=PALETTE[k%10];
+    h+=`<span style="background:${hexA(col,0.20)};border-bottom:2.5px solid ${col};border-radius:5px;padding:2px 2px">${esc(w)}</span><sup style="color:${col}">${k+1}</sup>`;}
+  else{h+=`<span style="color:${p?'#c2c7d6':'#7b8298'}">${esc(w)}</span>`;}if(p&&w==="。")h+="<br>";}
+  return `<div class="box">${h}</div>`;}
+function renderPairs(){let t="<table><tr><th>#</th><th>🍑 桃太郎の語</th><th>🐢 浦島太郎の語</th><th>類似度</th></tr>";
+  DATA.pairs.forEach(([a,b,s],k)=>{const col=PALETTE[k%10];
+    t+=`<tr><td><span class="swatch" style="background:${col}"></span>${k+1}</td><td>${esc(a)}</td><td>${esc(b)}</td><td><b>${s.toFixed(3)}</b></td></tr>`;});
+  t+="</table>";return `<p class="lab">🍑 桃太郎</p>${pairLine(DATA.heat_a,DATA.pairs.map(p=>p[0]))}
+    <p class="lab">🐢 浦島太郎</p>${pairLine(DATA.heat_b,DATA.pairs.map(p=>p[1]))}${t}`;}
+
+document.getElementById("hl").innerHTML=`
+  <div class="tag" style="color:#888;margin-top:8px">📑 ① 文アライメント（対応する文を同色で結ぶ）</div>${renderSent()}
+  <div class="tag" style="color:#888;margin-top:18px">🔥 ② トークンヒートマップ（🟥似てる方向 / 🟦離れる方向）</div>
+  <div class="legend"><span style="background:rgba(239,68,68,.75)">強く似</span>
+    <span style="background:rgba(239,68,68,.35)">やや似</span>
+    <span style="background:rgba(59,130,246,.35)">やや離</span>
+    <span style="background:rgba(59,130,246,.75)">強く離</span></div>
+  <p class="lab">🍑 桃太郎</p>${renderHeat(DATA.heat_a)}<p class="lab">🐢 浦島太郎</p>${renderHeat(DATA.heat_b)}
+  <div class="tag" style="color:#888;margin-top:18px">🔗 ③ トークンペアリング（似た語を同色＋番号で結ぶ）</div>${renderPairs()}`;
+
+let pca="";PCA_RATIO.forEach((r,i)=>{pca+=`<div class="pca-row"><span class="pca-name">第${i+1}軸</span>
+  <span class="pca-track"><span class="pca-fill" style="width:${Math.min(100,r*100*4).toFixed(1)}%"></span></span>
+  <span class="pca-pct">${(r*100).toFixed(1)}%</span></div>`;});
+document.getElementById("pca").innerHTML=pca;
+document.getElementById("cum").innerHTML=PCA_CUM.map(([k,c])=>
+  `<div><b>${(c*100).toFixed(0)}%</b><small>上位${k}軸の累積</small></div>`).join("");
+
+(function(){const W=900,H=190,padL=40,padR=30,padT=46,padB=42;const x0=-0.10,x1=0.27;
+  const X=v=>padL+(v-x0)/(x1-x0)*(W-padL-padR);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" font-family="inherit">`;
+  for(let v=-0.1;v<=0.25;v+=0.05){const gx=X(v);s+=`<line x1="${gx}" y1="${padT-10}" x2="${gx}" y2="${H-padB}" stroke="rgba(255,255,255,.08)"/>
+    <text x="${gx}" y="${H-padB+18}" fill="#8b93b8" font-size="11" text-anchor="middle">${v.toFixed(2)}</text>`;}
+  s+=`<line x1="${X(0)}" y1="${padT-14}" x2="${X(0)}" y2="${H-padB}" stroke="#aab2e0" stroke-dasharray="4 4"/>
+    <text x="${X(0)}" y="${padT-20}" fill="#aab2e0" font-size="11" text-anchor="middle">0</text>
+    <text x="${X(-0.06)}" y="${padT-20}" fill="#7f88b5" font-size="11" text-anchor="middle">← 判例側</text>
+    <text x="${X(0.20)}" y="${padT-20}" fill="#9b8bff" font-size="11" text-anchor="middle">法令側 →</text>`;
+  AXIS_GROUPS.forEach(([g,m,sd,n],i)=>{const col=PALETTE[i%10];const y=padT+i*((H-padT-padB)/AXIS_GROUPS.length)+6;
+    s+=`<line x1="${X(m-sd)}" y1="${y}" x2="${X(m+sd)}" y2="${y}" stroke="${col}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+    s+=`<circle cx="${X(m)}" cy="${y}" r="7" fill="${col}"><title>${g}: ${m.toFixed(3)} ±${sd.toFixed(3)}</title></circle>`;
+    s+=`<text x="${X(m)}" y="${y-12}" fill="${col}" font-size="12" font-weight="700" text-anchor="middle">${g}</text>`;});
+  s+="</svg>";document.getElementById("axis").innerHTML=s;})();
+
+let tb="<tr><th>グループ</th><th>軸上の位置（平均）</th><th>広がり (±std)</th><th>件数</th></tr>";
+AXIS_GROUPS.forEach(([g,m,sd,n],i)=>{const col=PALETTE[i%10];
+  tb+=`<tr><td><span class="swatch" style="background:${col}"></span>${g}</td>
+    <td><b>${m>=0?'+':''}${m.toFixed(3)}</b></td><td>±${sd.toFixed(3)}</td><td>${n}</td></tr>`;});
+document.getElementById("axistbl").innerHTML=tb;
+</script>
+</body>
+</html>
