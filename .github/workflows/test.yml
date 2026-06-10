@@ -16,13 +16,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: pip
-          cache-dependency-path: requirements-ci.txt
+        # pip キャッシュは付けない: slim 依存では「streamlit/scipy/pyarrow の wheel 群を
+        # キャッシュから復元」する方がフレッシュ install より遅く、Set up Python が
+        # 30〜56s に膨らんでいた。uv なら毎回フレッシュでも数秒で入る。
 
-      - name: Install lightweight dependencies
+      - name: Install lightweight dependencies (uv で高速化)
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-ci.txt
+          python -m pip install --upgrade uv
+          uv pip install --system -r requirements-ci.txt
 
       - name: Lint (syntax check)
         run: |
