@@ -3,82 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>類似度＆解析ツール ― 実データデモ</title>
+<title>謎の国家 RAG ― 解析ツール 実データデモ</title>
 <style>
-:root{--ink:#1e2330;--sub:#5b6478;--line:#e6e9f2;--bg:#f4f6fb;--card:#fff;
-  --shadow:0 10px 36px -14px rgba(30,30,80,.22);--indigo:#6366f1;--axis:#8b5cf6;}
+:root{--ink:#1e2330;--sub:#5b6478;--line:#e6e9f2;--bg:#eef1f8;--card:#fff;
+  --shadow:0 14px 44px -18px rgba(30,30,80,.30);--indigo:#6366f1;--axis:#8b5cf6;--ok:#10b981;}
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
-  color:var(--ink);background:var(--bg);line-height:1.7;
-  background-image:radial-gradient(900px 500px at 85% -8%,rgba(139,92,246,.08),transparent),
-   radial-gradient(800px 460px at -8% 6%,rgba(239,68,68,.06),transparent);}
-.wrap{max-width:900px;margin:0 auto;padding:0 18px 70px}
-.hero{padding:42px 0 6px;text-align:center}
-.hero .kic{font-size:.78rem;letter-spacing:.18em;color:var(--axis);font-weight:700}
-.hero h1{font-size:1.85rem;margin:.2em 0 .1em}
-.hero p{color:var(--sub);max-width:620px;margin:8px auto 0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;
-  padding:22px 24px 26px;margin:18px 0;box-shadow:var(--shadow)}
-.tag{font-size:.74rem;font-weight:800;color:var(--indigo);letter-spacing:.06em}
-.card h2{margin:.15em 0 .3em;font-size:1.3rem}
+  color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1100px 600px at 88% -12%,rgba(139,92,246,.12),transparent),
+   radial-gradient(900px 520px at -10% 4%,rgba(239,68,68,.07),transparent);}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 80px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:0 0 30px 30px;margin:0 -18px 22px;
+  background:linear-gradient(135deg,#171b3a 0%,#3a1d6b 52%,#0e2a52 100%);color:#fff;
+  padding:48px 34px 38px;box-shadow:var(--shadow)}
+.hero::before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,#8b5cf6,transparent 70%);top:-130px;right:-70px;filter:blur(46px);opacity:.6}
+.hero::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,#06b6d4,transparent 70%);bottom:-150px;left:-50px;filter:blur(46px);opacity:.5}
+.hero .kic{font-size:.76rem;letter-spacing:.2em;font-weight:700;color:#c9b8ff;position:relative}
+.hero h1{font-size:2.05rem;font-weight:800;margin:.18em 0 .12em;position:relative;letter-spacing:.01em}
+.hero p{color:#c9d0f0;max-width:640px;margin:6px 0 0;position:relative}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 4px;position:relative;z-index:2}
+.kpi{background:rgba(255,255,255,.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);
+  border-radius:15px;padding:13px 14px}
+.kpi .v{font-size:1.7rem;font-weight:800;line-height:1}
+.kpi .k{font-size:.72rem;color:#bcc4ec;margin-top:4px;font-weight:600}
+
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:22px 24px 26px;margin:16px 0;box-shadow:var(--shadow);
+  opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.card.in{opacity:1;transform:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:800;
+  letter-spacing:.1em;color:var(--axis);text-transform:uppercase}
+.card h2{margin:.18em 0 .3em;font-size:1.32rem}
 .note{color:var(--sub);font-size:.9rem}
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-.legend span{display:inline-flex;align-items:center;gap:5px;font-size:.8rem}
-.sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+.callout{border-left:4px solid var(--ok);background:#ecfdf5;border-radius:0 10px 10px 0;
+  padding:11px 14px;margin:12px 0;font-size:.91rem}
+
+/* scatter */
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.lgbtn{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;
+  padding:4px 11px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;
+  transition:.15s;user-select:none}
+.lgbtn .sw{width:11px;height:11px;border-radius:3px}
+.lgbtn.off{opacity:.32;background:#f1f3f9;text-decoration:line-through}
+.lgbtn:hover{border-color:var(--indigo)}
+.scatterbox{position:relative}
+#tooltip{position:absolute;pointer-events:none;background:#171b3a;color:#fff;font-size:.78rem;
+  padding:5px 9px;border-radius:7px;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5;
+  box-shadow:0 4px 14px rgba(0,0,0,.3)}
+svg circle{transition:opacity .4s}
+.toggle{display:inline-flex;gap:0;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:8px}
+.toggle button{border:0;background:#fff;padding:6px 14px;font-weight:700;font-size:.84rem;cursor:pointer;color:var(--sub)}
+.toggle button.on{background:var(--indigo);color:#fff}
+
+/* tables */
 table{border-collapse:separate;border-spacing:0;width:100%;margin-top:10px;font-size:.88rem;
-  border-radius:11px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
+  border-radius:12px;overflow:hidden;box-shadow:0 1px 0 var(--line)}
 th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 th{background:linear-gradient(#f6f7fb,#eef0f7);font-weight:700;font-size:.78rem;color:#46506a}
 tr:last-child td{border-bottom:none}
-.q{font-weight:700;margin:14px 0 2px;color:#374151}
-.bar{height:9px;border-radius:5px;background:linear-gradient(90deg,var(--indigo),var(--axis));display:inline-block;vertical-align:middle}
-.callout{border-left:4px solid #10b981;background:#ecfdf5;border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;font-size:.9rem}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:5px}
+.bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--indigo),var(--axis));display:inline-block;vertical-align:middle}
+
+/* query tabs */
+.qtabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 6px}
+.qtab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;
+  font-weight:700;font-size:.84rem;cursor:pointer;color:var(--sub);transition:.15s}
+.qtab.on{background:linear-gradient(120deg,var(--indigo),var(--axis));color:#fff;border-color:transparent}
+@media(max-width:680px){.kpis{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:1.6rem}}
 </style>
 </head>
 <body>
+
+<div class="hero">
+  <div style="max-width:960px;margin:0 auto">
+    <div class="kic">謎の国家 RAG ・ 解析ツール 実データデモ</div>
+    <h1>1,399 文書を解析するとこう見える</h1>
+    <p>埋め込み空間（768次元）を 4 つの角度から覗いた実データです。物語・法律・判例がどう分かれ、
+       どう近づくかを、触りながら確かめられます。</p>
+    <div class="kpis">
+      <div class="kpi"><div class="v" id="k1">1,399</div><div class="k">書庫の文書チャンク</div></div>
+      <div class="kpi"><div class="v">12</div><div class="k">グループ</div></div>
+      <div class="kpi"><div class="v">35</div><div class="k">同梱した物語</div></div>
+      <div class="kpi"><div class="v">768</div><div class="k">ベクトル次元</div></div>
+    </div>
+  </div>
+</div>
+
 <div class="wrap">
-  <div class="hero">
-    <div class="kic">謎の国家 RAG ・ ツール実データデモ</div>
-    <h1>1,399文書を解析するとこう見える</h1>
-    <p>highlight_tool.py の解析タブを、実際の書庫データで動かした結果です。
-       物語（昔話/童話）と法律・判例が、埋め込み空間でどう分かれるかが見えます。</p>
-  </div>
-
-  <div class="card">
-    <span class="tag">🗺️ 書庫マップ（PCA 2D）</span>
+  <div class="card" id="c1">
+    <span class="eyebrow">🗺️ 書庫マップ ・ インタラクティブ</span>
     <h2>物語は法律・判例から離れた「島」になる</h2>
-    <p class="note">全1,399文書を768次元→2Dに圧縮（各グループからサンプル表示）。色＝グループ。
-      右上に物語（昔話/童話）と法令、中央〜左下に判例が分布します。</p>
-    <div id="scatter"></div>
+    <p class="note">全文書を 2D に圧縮（各グループのサンプル）。<b>凡例をクリックで表示/非表示</b>、
+      <b>点にカーソル</b>で詳細、<b>◇</b>は各グループの重心。</p>
     <div class="legend" id="legend"></div>
+    <div class="scatterbox">
+      <div id="scatter"></div>
+      <div id="tooltip"></div>
+    </div>
   </div>
 
-  <div class="card">
-    <span class="tag">🎯 クラスタ自動発見（K-means, K=8）</span>
+  <div class="card" id="c2">
+    <span class="eyebrow">🎯 クラスタ自動発見 ・ K-means</span>
     <h2>メタデータ無しでも、物語は1つのクラスタにまとまる</h2>
-    <p class="note">ベクトルの近さだけで8グループに自動分割。人手ラベルがどのクラスタに入ったか：</p>
+    <p class="note">ベクトルの近さだけで8グループに自動分割。人手ラベルがどのクラスタに入ったか（濃いほど多い）：</p>
     <div id="cluster"></div>
     <div class="callout" id="cluster-note"></div>
   </div>
 
-  <div class="card">
-    <span class="tag">🔍 クエリ近傍探索</span>
+  <div class="card" id="c3">
+    <span class="eyebrow">🔍 クエリ近傍探索 ・ タブ切替</span>
     <h2>質問を投げると意味の近い文書が返る</h2>
-    <p class="note">クエリを768次元に埋め込み、コサイン類似度で上位5件。物語の質問には物語が、
-      法律の質問には条文が返るのが分かります。</p>
+    <p class="note">質問を768次元に埋め込み、コサイン類似度で上位5件。<b>タブで質問を切り替え</b>られます。</p>
+    <div class="qtabs" id="qtabs"></div>
     <div id="query"></div>
   </div>
 
-  <div class="card">
-    <span class="tag">🔗 重複・冗長検出</span>
+  <div class="card" id="c4">
+    <span class="eyebrow">🔗 重複・冗長検出</span>
     <h2>似すぎる文書ペア（cos ≥ 0.93）</h2>
-    <p class="note">判例は定型文が多く、ほぼ同一のチャンクが見つかります（RAGの検索品質チェックに有用）。</p>
+    <p class="note">判例は定型文が多く、ほぼ同一のチャンクが見つかります（RAG の検索品質チェックに有用）。</p>
     <div id="dup"></div>
   </div>
 
   <p class="note" style="text-align:center;margin-top:24px">
     すべて実データ（全1,399チャンク／paraphrase-multilingual-mpnet-base-v2）の出力。
-    インタラクティブ版は <code>streamlit run highlight_tool.py</code> で。</p>
+    インタラクティブに全機能を触るには <code>./run_tool.sh</code>（または <code>streamlit run highlight_tool.py</code>）。</p>
 </div>
 
 <script>
@@ -88,71 +142,101 @@ const DATA = {"n":1399,"counts":{"世界童話":15,"倫理指針":13,"刑法":37
 "dup":[{"s":0.999,"a":"判例 (民事)","b":"判例 (民事)","ap":"遠藤陽子 v. 近藤健太 CIVIL-201…","bp":"遠藤陽子 v. 近藤健太 CIVIL-201…"},{"s":0.998,"a":"判例 (民事)","b":"判例 (民事)","ap":"東方不動産 v. 風雲堂 CIVIL-201…","bp":"東方不動産 v. 風雲堂 CIVIL-201…"},{"s":0.997,"a":"判例 (民事)","b":"判例 (民事)","ap":"青木純子 v. 遠藤三郎 CIVIL-201…","bp":"藤井三郎 v. 青木純子 CIVIL-201…"},{"s":0.996,"a":"判例 (刑事)","b":"判例 (刑事)","ap":"国家 v. 藤田信四 CRIM-2020…","bp":"国家 v. 坂本進 CRIM-2021-02…"},{"s":0.996,"a":"判例 (民事)","b":"判例 (民事)","ap":"福田恵子 v. 後藤翔太 CIVIL-201…","bp":"福田裕子 v. 後藤陽子 CIVIL-201…"},{"s":0.996,"a":"判例 (刑事)","b":"判例 (刑事)","ap":"国家 v. 岡田幸六 CRIM-2022…","bp":"国家 v. 原田純 CRIM-2024-02…"},{"s":0.996,"a":"判例 (民事)","b":"判例 (民事)","ap":"坂本誠 v. 藤田花子 CIVIL-2022…","bp":"近藤花子 v. 池田由美 CIVIL-202…"}],
 "query":{"鬼を退治する話":[{"s":0.65,"g":"日本昔話","p":"悪い狸を飼い兎が懲らしめる（かちかち山）"},{"s":0.587,"g":"世界童話","p":"森のお菓子の家と魔女（ヘンゼルとグレーテル）"},{"s":0.575,"g":"世界童話","p":"百年の眠りと茨の城（眠れる森の美女）"},{"s":0.571,"g":"日本昔話","p":"ねずみの国でもてなされる（おむすびころりん）"},{"s":0.535,"g":"日本昔話","p":"鬼の宴で踊りこぶを取る（こぶとり爺さん）"}],"亀を助ける物語":[{"s":0.709,"g":"日本昔話","p":"悪い狸を兎が懲らしめる（かちかち山）"},{"s":0.63,"g":"日本昔話","p":"茶釜が狸に変わり芸を見せる（ぶんぶく茶釜）"},{"s":0.625,"g":"日本昔話","p":"子蟹が仲間と猿に仕返し（さるかに合戦）"},{"s":0.565,"g":"日本昔話","p":"舌切り雀の恩返し"},{"s":0.53,"g":"世界童話","p":"醜いアヒルの子が白鳥に"}],"窃盗罪の量刑は？":[{"s":0.771,"g":"刑法","p":"第195条（昏酔強盗）"},{"s":0.727,"g":"刑法","p":"第203条（横領）5年以下…"},{"s":0.715,"g":"刑法","p":"第8条（刑の種類）"},{"s":0.681,"g":"刑法","p":"第148条（加重収賄）"},{"s":0.668,"g":"刑法","p":"第36条（共犯の離脱）"}]}};
 
-const COL = {"憲法":"#1f77b4","刑法":"#d62728","民法":"#2ca02c","行政法":"#9467bd",
-  "文化規制":"#ff7f0e","倫理指針":"#17becf","判例 (刑事)":"#e377c2","判例 (民事)":"#8c564b",
-  "判例 (憲法)":"#7f7f7f","日本昔話":"#ff5a5a","世界童話":"#3b82f6","法令":"#bcbd22"};
-const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const COL={"憲法":"#1f77b4","刑法":"#d62728","民法":"#2ca02c","行政法":"#9467bd","文化規制":"#ff7f0e",
+  "倫理指針":"#17becf","判例 (刑事)":"#e377c2","判例 (民事)":"#8c564b","判例 (憲法)":"#7f7f7f",
+  "日本昔話":"#ff5a5a","世界童話":"#3b82f6","法令":"#bcbd22"};
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const groups=[...new Set(DATA.map.map(p=>p.g))];
+const hidden=new Set();
 
-// --- 散布図 ---
-(function(){
-  const W=820,H=440,pad=34;
-  const xs=DATA.map.map(p=>p.x), ys=DATA.map.map(p=>p.y);
-  const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);
-  const X=x=>pad+(x-xmin)/(xmax-xmin)*(W-2*pad);
-  const Y=y=>H-pad-(y-ymin)/(ymax-ymin)*(H-2*pad);
-  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:#fbfcff;border:1px solid #eee;border-radius:10px">`;
-  for(const p of DATA.map){
-    s+=`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="5" fill="${COL[p.g]||'#999'}" opacity="0.75"><title>${esc(p.g)}</title></circle>`;
-  }
-  s+=`</svg>`;
+// ---- 散布図（凡例トグル＋ホバー＋重心＋アニメ）----
+const W=860,H=460,pad=38;
+const xs=DATA.map.map(p=>p.x),ys=DATA.map.map(p=>p.y);
+const xmin=Math.min(...xs)-0.1,xmax=Math.max(...xs)+0.1,ymin=Math.min(...ys)-0.1,ymax=Math.max(...ys)+0.1;
+const X=x=>pad+(x-xmin)/(xmax-xmin)*(W-2*pad);
+const Y=y=>H-pad-(y-ymin)/(ymax-ymin)*(H-2*pad);
+function centroid(g){const pts=DATA.map.filter(p=>p.g===g);
+  return [pts.reduce((s,p)=>s+p.x,0)/pts.length, pts.reduce((s,p)=>s+p.y,0)/pts.length];}
+
+function drawScatter(){
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="background:linear-gradient(#fbfcff,#f3f5fc);border:1px solid #e7e9f2;border-radius:12px">`;
+  // grid
+  for(let gx=Math.ceil(xmin*2)/2; gx<=xmax; gx+=0.5){s+=`<line x1="${X(gx)}" y1="${pad}" x2="${X(gx)}" y2="${H-pad}" stroke="#eef0f7"/>`;}
+  for(let gy=Math.ceil(ymin*2)/2; gy<=ymax; gy+=0.5){s+=`<line x1="${pad}" y1="${Y(gy)}" x2="${W-pad}" y2="${Y(gy)}" stroke="#eef0f7"/>`;}
+  s+=`<line x1="${X(0)}" y1="${pad}" x2="${X(0)}" y2="${H-pad}" stroke="#cdd3e3" stroke-dasharray="3 3"/>`;
+  s+=`<line x1="${pad}" y1="${Y(0)}" x2="${W-pad}" y2="${Y(0)}" stroke="#cdd3e3" stroke-dasharray="3 3"/>`;
+  // points
+  DATA.map.forEach((p,i)=>{
+    if(hidden.has(p.g)) return;
+    s+=`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="5.5" fill="${COL[p.g]}" opacity="0"
+      data-g="${esc(p.g)}" data-x="${p.x}" data-y="${p.y}" style="animation:fadein .5s ${(i*8)}ms forwards"/>`;
+  });
+  // centroids
+  groups.forEach(g=>{if(hidden.has(g))return;const[cx,cy]=centroid(g);
+    s+=`<rect x="${(X(cx)-6).toFixed(1)}" y="${(Y(cy)-6).toFixed(1)}" width="12" height="12"
+      transform="rotate(45 ${X(cx).toFixed(1)} ${Y(cy).toFixed(1)})" fill="${COL[g]}" stroke="#fff" stroke-width="1.5" opacity=".95"><title>${esc(g)} の重心</title></rect>`;});
+  s+=`</svg><style>@keyframes fadein{to{opacity:.8}}</style>`;
   document.getElementById("scatter").innerHTML=s;
-  const seen=[...new Set(DATA.map.map(p=>p.g))];
-  document.getElementById("legend").innerHTML=seen.map(g=>
-    `<span><span class="sw" style="background:${COL[g]||'#999'}"></span>${esc(g)} (${DATA.counts[g]})</span>`).join("");
-})();
+  // hover
+  const box=document.getElementById("scatter"),tip=document.getElementById("tooltip");
+  box.querySelectorAll("circle").forEach(c=>{
+    c.addEventListener("mousemove",e=>{const r=box.getBoundingClientRect();
+      tip.style.left=(e.clientX-r.left+10)+"px";tip.style.top=(e.clientY-r.top-6)+"px";
+      tip.style.opacity=1;tip.innerHTML=`<b>${c.dataset.g}</b> &nbsp;(${(+c.dataset.x).toFixed(2)}, ${(+c.dataset.y).toFixed(2)})`;});
+    c.addEventListener("mouseleave",()=>tip.style.opacity=0);
+  });
+}
+// legend
+document.getElementById("legend").innerHTML=groups.map(g=>
+  `<span class="lgbtn" data-g="${esc(g)}"><span class="sw" style="background:${COL[g]}"></span>${esc(g)} (${DATA.counts[g]})</span>`).join("");
+document.querySelectorAll(".lgbtn").forEach(b=>b.addEventListener("click",()=>{
+  const g=b.dataset.g;if(hidden.has(g)){hidden.delete(g);b.classList.remove("off");}else{hidden.add(g);b.classList.add("off");}
+  drawScatter();}));
+drawScatter();
 
-// --- クラスタ クロス集計 ---
+// ---- クラスタ ----
 (function(){
-  const groups=Object.keys(DATA.cross);
-  const cls=[...new Set(groups.flatMap(g=>Object.keys(DATA.cross[g])))].sort((a,b)=>a-b);
+  const gs=Object.keys(DATA.cross);
+  const cls=[...new Set(gs.flatMap(g=>Object.keys(DATA.cross[g])))].sort((a,b)=>a-b);
   let t=`<table><tr><th>人手ラベル</th>`+cls.map(c=>`<th>C${c}</th>`).join("")+`</tr>`;
-  for(const g of groups){
-    t+=`<tr><td><span class="sw" style="background:${COL[g]||'#999'}"></span>${esc(g)}</td>`;
+  for(const g of gs){t+=`<tr><td><span class="sw" style="background:${COL[g]}"></span>${esc(g)}</td>`;
     for(const c of cls){const v=DATA.cross[g][c]||0;
-      t+=`<td style="background:${v?`rgba(99,102,241,${Math.min(0.6,v/200+0.12)})`:'transparent'};font-weight:${v?700:400}">${v||''}</td>`;}
-    t+=`</tr>`;
-  }
-  t+=`</table>`;
-  document.getElementById("cluster").innerHTML=t;
+      t+=`<td style="background:${v?`rgba(99,102,241,${Math.min(0.62,v/200+0.12)})`:'transparent'};font-weight:${v?700:400};color:${v>120?'#fff':'#1e2330'}">${v||''}</td>`;}
+    t+=`</tr>`;}
+  t+=`</table>`;document.getElementById("cluster").innerHTML=t;
   document.getElementById("cluster-note").innerHTML=
-    "👉 <b>世界童話(15)も日本昔話(20)も、まるごとクラスタ C1 に集まりました</b> ― "+
-    "メタデータを一切見ていないのに、K-means が「物語」という意味のまとまりを自力で発見しています。"+
-    "判例(刑事)はC3/C5、判例(民事)はC0/C7に分かれ、内容のサブ構造も見えます。";
+    "👉 <b>世界童話(15)も日本昔話(20)も、まるごとクラスタ C1 に集まりました</b> ― メタデータを一切見ていないのに、"+
+    "K-means が「物語」という意味のまとまりを自力で発見。判例(刑事)はC3/C5、判例(民事)はC0/C7に割れ、内容のサブ構造も見えます。";
 })();
 
-// --- クエリ ---
+// ---- クエリ（タブ切替）----
 (function(){
-  let h="";
-  for(const[q,rows]of Object.entries(DATA.query)){
-    h+=`<div class="q">Q：「${esc(q)}」</div><table><tr><th>類似度</th><th>グループ</th><th>内容</th></tr>`;
-    for(const r of rows){
-      h+=`<tr><td><span class="bar" style="width:${(r.s*70).toFixed(0)}px"></span> ${r.s.toFixed(3)}</td>`+
-         `<td><span class="sw" style="background:${COL[r.g]||'#999'}"></span>${esc(r.g)}</td><td>${esc(r.p)}</td></tr>`;
-    }
-    h+=`</table>`;
-  }
-  document.getElementById("query").innerHTML=h;
+  const qs=Object.keys(DATA.query);let cur=0;
+  const tabs=document.getElementById("qtabs");
+  tabs.innerHTML=qs.map((q,i)=>`<button class="qtab${i===0?' on':''}" data-i="${i}">${esc(q)}</button>`).join("");
+  function render(i){
+    const rows=DATA.query[qs[i]];
+    let h=`<table><tr><th>類似度</th><th>グループ</th><th>内容</th></tr>`;
+    for(const r of rows){h+=`<tr><td><span class="bar" style="width:${(r.s*72).toFixed(0)}px"></span> ${r.s.toFixed(3)}</td>`+
+      `<td><span class="sw" style="background:${COL[r.g]||'#999'}"></span>${esc(r.g)}</td><td>${esc(r.p)}</td></tr>`;}
+    h+=`</table>`;document.getElementById("query").innerHTML=h;}
+  tabs.querySelectorAll(".qtab").forEach(b=>b.addEventListener("click",()=>{
+    tabs.querySelectorAll(".qtab").forEach(x=>x.classList.remove("on"));b.classList.add("on");render(+b.dataset.i);}));
+  render(0);
 })();
 
-// --- 重複 ---
+// ---- 重複 ----
 (function(){
   let t=`<table><tr><th>類似度</th><th>文書A</th><th>文書B</th></tr>`;
-  for(const d of DATA.dup){
-    t+=`<tr><td><b>${d.s.toFixed(3)}</b></td><td>[${esc(d.a)}] ${esc(d.ap)}</td><td>[${esc(d.b)}] ${esc(d.bp)}</td></tr>`;
-  }
-  t+=`</table>`;
-  document.getElementById("dup").innerHTML=t;
+  for(const d of DATA.dup){t+=`<tr><td><b style="color:#ef4444">${d.s.toFixed(3)}</b></td>`+
+    `<td><span class="sw" style="background:${COL[d.a]}"></span>${esc(d.ap)}</td>`+
+    `<td><span class="sw" style="background:${COL[d.b]}"></span>${esc(d.bp)}</td></tr>`;}
+  t+=`</table>`;document.getElementById("dup").innerHTML=t;
 })();
+
+// ---- カード出現アニメ ----
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll(".card").forEach(c=>io.observe(c));
 </script>
 </body>
 </html>
