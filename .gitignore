@@ -50,3 +50,6 @@ logs/*.log
 /highlight_demo.html
 /line_report.png
 /tool_view.png
+
+# Claude Code セッション引き継ぎ（個人作業記録）
+.claude/
