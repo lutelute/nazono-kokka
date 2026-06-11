@@ -79,19 +79,20 @@ def main() -> int:
         fixed_detail = []
         for r in rows:
             tc = meta[r["test_case_id"]]
-            # 修正後の期待条文（パッチ未適用ファイルでも STATUTE_FIXES を優先適用）
+            # 修正前 = 評価時点のスコア（JSONL 記録値）。パッチ適用後に実行しても崩れない。
+            # 修正後 = STATUTE_FIXES（適用済み all_cases.json と同内容）での再計算。
             fixed_statutes = STATUTE_FIXES.get(tc["id"], tc.get("expected_statutes", []))
-            orig = rescore_row(r, tc, tc.get("expected_statutes", []))
             fixed = rescore_row(r, tc, fixed_statutes)
-            orig_scores.append(orig["overall"])
+            orig_overall = r["overall_score"]
+            orig_scores.append(orig_overall)
             fixed_scores.append(fixed["overall"])
             if tc["id"] in STATUTE_FIXES:
                 fixed_detail.append(
                     {
                         "id": tc["id"],
-                        "before": orig["overall"],
+                        "before": orig_overall,
                         "after": fixed["overall"],
-                        "statute_before": orig["statute"],
+                        "statute_before": r["statute"],
                         "statute_after": fixed["statute"],
                     }
                 )
@@ -102,6 +103,10 @@ def main() -> int:
             "overall_before_fix": avg(orig_scores),
             "overall_after_fix": avg(fixed_scores),
             "fixed_cases": sorted(fixed_detail, key=lambda d: d["id"]),
+            "after_by_id": {
+                r["test_case_id"]: round(s, 4)
+                for r, s in zip(rows, fixed_scores)
+            },
         }
 
     for name, s in out.items():

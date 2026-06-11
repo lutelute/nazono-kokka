@@ -211,6 +211,26 @@ def main() -> int:
         w("検索改善の優位がいっそう明確になる。")
         w("")
 
+        # 共通ケースの公平比較（修正後スコア）
+        ids_sets = [set(s.get("after_by_id", {})) for s in rescore.values()]
+        common = set.intersection(*ids_sets) if ids_sets else set()
+        if len(rescore) >= 2 and common:
+            w(f"### 共通ケースでの公平比較（修正後スコア・共通 {len(common)} 件）")
+            w("")
+            w("| 構成 | 共通ケース平均 |")
+            w("|---|---|")
+            means = {}
+            for name, s in rescore.items():
+                m = sum(s["after_by_id"][i] for i in common) / len(common)
+                means[name] = m
+                w(f"| {name} | **{m:.4f}** |")
+            w("")
+            if len(means) == 2:
+                vals = sorted(means.items(), key=lambda kv: kv[1])
+                diff = (vals[1][1] - vals[0][1]) * 100
+                w(f"同一ケース・同一プロンプトでの差は **{diff:+.1f}pt**（{vals[1][0]} が優位）。")
+                w("")
+
     # ----- 改善の経緯 -----
     w("## 5. 評価基盤の主な改善")
     w("")
