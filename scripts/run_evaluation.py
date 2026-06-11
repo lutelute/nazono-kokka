@@ -124,6 +124,11 @@ def main() -> int:
         choices=["dense", "advanced"],
         help="検索方式: dense=従来 / advanced=hybrid+rerank+法令クォータ",
     )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="incremental JSONL に記録済みのケースをスキップして再開する",
+    )
     args = parser.parse_args()
 
     mgr = TestCaseManager()
@@ -137,6 +142,18 @@ def main() -> int:
         num_ctx=args.num_ctx,
     )
     incremental = TEST_CASES_DIR / "results" / f"incremental_{config.name}.jsonl"
+    if args.resume and incremental.exists():
+        done_ids = {
+            json.loads(line)["test_case_id"]
+            for line in incremental.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        }
+        before = len(cases)
+        cases = [tc for tc in cases if tc.id not in done_ids]
+        print(
+            f"--resume: 記録済み {len(done_ids)} 件をスキップ ({before} -> {len(cases)} 件)",
+            flush=True,
+        )
     engine = NoThinkEngine(
         retriever_mode=args.retriever, incremental_path=incremental
     )
