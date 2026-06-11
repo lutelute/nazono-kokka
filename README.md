@@ -1,3 +1,17 @@
+<p align="center">
+  <a href="https://lutelute.github.io/nazono-kokka/">
+    <img src="docs/banner.svg" alt="謎の国家 — 国家機密 RAG 文書解析システム / NAZONO KOKKA CLASSIFIED RAG ARCHIVE" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://lutelute.github.io/nazono-kokka/"><img src="https://img.shields.io/badge/教材ショーケース-LIVE-d6283b?style=flat-square&labelColor=0c0c14"></a>
+  <img src="https://img.shields.io/badge/分類-極秘%20EYES%20ONLY-d9a441?style=flat-square&labelColor=0c0c14">
+  <img src="https://img.shields.io/badge/CASE%20FILES-1%2C206-8b8f9d?style=flat-square&labelColor=0c0c14">
+  <img src="https://img.shields.io/badge/VECTOR-768--dim-6366f1?style=flat-square&labelColor=0c0c14">
+  <a href="https://github.com/lutelute/nazono-kokka/actions/workflows/test.yml"><img src="https://github.com/lutelute/nazono-kokka/actions/workflows/test.yml/badge.svg"></a>
+</p>
+
 # 謎の国家 — RAG 精度検証・比較ツール
 
 > 架空の国家の法体系（憲法〜倫理指針＋1,206 判例）＋昔話・童話 35 話を題材に、
