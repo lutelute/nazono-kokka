@@ -47,6 +47,7 @@ from rag_system.vector_analysis import (
     short_preview,
     top_k_similar,
 )
+from ui.highlight_view import render_similarity_highlight
 
 logging.basicConfig(
     level=logging.INFO,
@@ -1280,6 +1281,15 @@ def _render_two_doc_comparison() -> None:
             "負方向は片方だけが活性化している軸です。"
         )
 
+    st.markdown("**どこが似ているか ― 実テキストのハイライト**")
+    render_similarity_highlight(
+        text_a,
+        text_b,
+        label_a=f"文書 A（{preset_a}）",
+        label_b=f"文書 B（{preset_b}）",
+        key_prefix="twodoc",
+    )
+
 
 def _interpret_similarity(sim: float) -> str:
     if sim >= 0.85:
@@ -1496,6 +1506,15 @@ def _render_story_lab() -> None:
     with col_metric:
         st.metric("コサイン類似度", f"{s:.4f}")
         st.write(_interpret_similarity(s))
+
+    st.markdown("**どこが似ているか ― 実テキストのハイライト**")
+    render_similarity_highlight(
+        texts[i],
+        texts[j],
+        label_a=title_a,
+        label_b=title_b,
+        key_prefix="storylab",
+    )
 
     # --- (d) cross-domain probe: pick a folktale, find closest corpus chunks ---
     st.markdown("**7-d. 童話 → 謎の国家の書庫 ハイブリッド検索**")
