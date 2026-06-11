@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>謎の国家 RAG — 類似度＆解析ツール（ブラウザ版）</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.css" />
+  <style>
+    #loading { font-family: "Hiragino Sans","Noto Sans JP",sans-serif; color:#555;
+               max-width:640px; margin:80px auto; text-align:center; line-height:1.9; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="loading">
+      <h2>🔬 類似度＆解析ツールを起動中…</h2>
+      <p>ブラウザ内で Python (Pyodide) をロードしています。<br>
+         初回は 20〜40 秒ほどかかります。サーバーは使っていません。</p>
+    </div>
+  </div>
+  <script type="module">
+    import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js";
+
+    const APP = `
+import html
+import json
+
+import altair as alt
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+st.set_page_config(page_title="謎の国家 RAG — 類似度＆解析（ブラウザ版）",
+                   page_icon="🔬", layout="wide")
+
+
+@st.cache_data
+def load_data():
+    with open("data.json", encoding="utf-8") as f:
+        return json.load(f)
+
+
+DATA = load_data()
+STORIES = DATA["stories"]
+CORPUS = DATA["corpus"]
+
+st.title("🔬 謎の国家 RAG — 類似度＆解析ツール（ブラウザ版）")
+st.caption(
+    "サーバー不要・ブラウザ内 Python で動く体験版。"
+    "埋め込み（" + DATA["model"] + " / 768次元）は事前計算済みで、"
+    "ここではそのベクトルを使った計算と可視化だけを行っています。"
+    "自由入力テキストの解析と RAG チャットはローカル版（README 参照）で。"
+)
+
+PALETTE = [
+    "rgba(239,68,68,.30)", "rgba(59,130,246,.30)", "rgba(16,185,129,.30)",
+    "rgba(245,158,11,.35)", "rgba(168,85,247,.30)", "rgba(236,72,153,.30)",
+    "rgba(20,184,166,.30)", "rgba(99,102,241,.30)",
+]
+
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["① 類似度行列", "② 二話ハイライト比較", "③ 埋め込み地図", "④ 法令⇄判例の軸"]
+)
+
+# ----------------------------------------------------------------------
+with tab1:
+    st.subheader("物語・条文どうしのコサイン類似度")
+    names = list(STORIES.keys())
+    vecs = np.array([STORIES[n]["vec"] for n in names])
+    sim = vecs @ vecs.T
+    df = pd.DataFrame(np.round(sim, 3), index=names, columns=names)
+    st.dataframe(df, use_container_width=True)
+    st.markdown(
+        "- 桃太郎と浦島太郎のような **同ジャンル（昔話）** は高め、"
+        "物語と **法律条文** は低くなります。\\n"
+        "- RAG はこの数字で「同じ話題か違う話題か」を判断しています。"
+    )
+
+# ----------------------------------------------------------------------
+with tab2:
+    st.subheader("二話を選んで「どこが似ているか」を見る")
+    c1, c2 = st.columns(2)
+    names = list(STORIES.keys())
+    with c1:
+        na = st.selectbox("テキスト A", names, index=0)
+    with c2:
+        nb = st.selectbox("テキスト B", names, index=1)
+    thresh = st.slider("対応とみなす類似度のしきい値", 0.20, 0.80, 0.40, 0.05)
+
+    A, B = STORIES[na], STORIES[nb]
+    va = np.array(A["sent_vecs"]); vb = np.array(B["sent_vecs"])
+    simmat = va @ vb.T
+
+    pair_color = {}
+    color_i = 0
+    rows = []
+    for i, sa in enumerate(A["sentences"]):
+        j = int(np.argmax(simmat[i]))
+        s = float(simmat[i][j])
+        matched = s >= thresh
+        if matched:
+            pair_color[(i, j)] = PALETTE[color_i % len(PALETTE)]
+            color_i += 1
+        rows.append((i, j, s, matched))
+
+    def render_a():
+        parts = []
+        for i, sa in enumerate(A["sentences"]):
+            c = next((col for (ai, bj), col in pair_color.items() if ai == i), None)
+            t = html.escape(sa)
+            parts.append(
+                "<span style='background:" + c + ";border-radius:4px;padding:1px 2px'>" + t + "</span>"
+                if c else t
+            )
+        return "".join(parts)
+
+    def render_b():
+        parts = []
+        for j, sb in enumerate(B["sentences"]):
+            c = next((col for (ai, bj), col in pair_color.items() if bj == j), None)
+            t = html.escape(sb)
+            parts.append(
+                "<span style='background:" + c + ";border-radius:4px;padding:1px 2px'>" + t + "</span>"
+                if c else t
+            )
+        return "".join(parts)
+
+    h1, h2 = st.columns(2)
+    with h1:
+        st.markdown("**" + html.escape(na) + "**")
+        st.markdown(
+            "<div style='line-height:2.0;font-size:1.02rem'>" + render_a() + "</div>",
+            unsafe_allow_html=True,
+        )
+    with h2:
+        st.markdown("**" + html.escape(nb) + "**")
+        st.markdown(
+            "<div style='line-height:2.0;font-size:1.02rem'>" + render_b() + "</div>",
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("**文ごとの最良対応**（A の各文 → B で最も近い文）")
+    table = pd.DataFrame(
+        [
+            {
+                "A の文": A["sentences"][i][:28] + ("…" if len(A["sentences"][i]) > 28 else ""),
+                "B の最良文": B["sentences"][j][:28] + ("…" if len(B["sentences"][j]) > 28 else ""),
+                "類似度": round(s, 3),
+                "対応": "✅" if m else "—",
+            }
+            for (i, j, s, m) in rows
+        ]
+    )
+    st.dataframe(table, use_container_width=True, hide_index=True)
+    st.caption("同じ色 = 対応づいた文ペア。しきい値を動かすと対応の付き方が変わります。")
+
+# ----------------------------------------------------------------------
+with tab3:
+    st.subheader("書庫 1,399 文書の埋め込み地図（PCA で 768次元 → 2次元）")
+    xy = np.array(CORPUS["pca_xy"])
+    dfm = pd.DataFrame({"x": xy[:, 0], "y": xy[:, 1], "種別": CORPUS["group"]})
+    chart = (
+        alt.Chart(dfm)
+        .mark_circle(size=22, opacity=0.55)
+        .encode(
+            x=alt.X("x", title="第1主成分"),
+            y=alt.Y("y", title="第2主成分"),
+            color=alt.Color("種別", legend=alt.Legend(title="文書種別")),
+            tooltip=["種別"],
+        )
+        .properties(height=460)
+        .interactive()
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+    ev = CORPUS["explained_variance"]
+    dfe = pd.DataFrame(
+        {"主成分": list(range(1, len(ev) + 1)), "分散説明率": ev,
+         "累積": np.cumsum(ev)}
+    )
+    st.markdown("**主成分の分散説明率**（768次元のうち上位20軸）")
+    bars = (
+        alt.Chart(dfe)
+        .mark_bar()
+        .encode(x=alt.X("主成分:O"), y=alt.Y("分散説明率:Q", axis=alt.Axis(format="%")))
+        .properties(height=200)
+    )
+    st.altair_chart(bars, use_container_width=True)
+    st.caption(
+        "第1軸 " + str(round(ev[0] * 100, 1)) + "% / 上位20軸 累積 "
+        + str(round(float(np.sum(ev)) * 100, 1)) + "% — 実効次元は 768 よりずっと小さい。"
+    )
+
+# ----------------------------------------------------------------------
+with tab4:
+    st.subheader("『法令 ⇄ 判例』概念軸への射影")
+    st.markdown(
+        "法令グループの重心と判例グループの重心を結ぶ方向（768次元の単位ベクトル）に"
+        "全文書を射影した値。**正側 = 法令らしい / 負側 = 判例らしい**。"
+    )
+    dfa = pd.DataFrame({"射影値": CORPUS["axis_projection"], "種別": CORPUS["group"]})
+    strip = (
+        alt.Chart(dfa)
+        .mark_tick(opacity=0.35, thickness=1.5)
+        .encode(
+            x=alt.X("射影値:Q"),
+            y=alt.Y("種別:N", sort="-x", title=None),
+            color=alt.Color("種別:N", legend=None),
+        )
+        .properties(height=260)
+    )
+    st.altair_chart(strip, use_container_width=True)
+
+    means = dfa.groupby("種別")["射影値"].agg(["mean", "std", "count"]).reset_index()
+    means = means.sort_values("mean", ascending=False)
+    means.columns = ["種別", "平均", "標準偏差", "件数"]
+    st.dataframe(
+        means.round(3), use_container_width=True, hide_index=True
+    )
+    st.caption("法令系（憲法・刑法・民法…）が正側、判例3種が 0 付近に分かれます。")
+`;
+
+    const dataUrl = new URL("data.json", window.location.href).href;
+    mount(
+      {
+        requirements: ["numpy", "pandas", "altair"],
+        entrypoint: "app.py",
+        files: {
+          "app.py": APP,
+          "data.json": { url: dataUrl },
+        },
+      },
+      document.getElementById("root"),
+    );
+  </script>
+</body>
+</html>
