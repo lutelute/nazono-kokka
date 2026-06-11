@@ -188,6 +188,29 @@ def main() -> int:
     w("修正は `scripts/fix_test_cases.py --apply` で適用する（GEN 系の期待値と整合確認済み）。")
     w("")
 
+    # ----- 修正後スコア（再スコアリング） -----
+    rescore_path = RESULTS / "rescore_after_fix.json"
+    if rescore_path.exists():
+        rescore = json.loads(rescore_path.read_text(encoding="utf-8"))
+        w("### 修正後スコア（保存済み応答の再スコアリング）")
+        w("")
+        w("期待値はプロンプト・検索に影響しないため、保存済み応答への文字列マッチ再計算で")
+        w("修正後スコアが正確に得られる（`scripts/rescore_results.py`、LLM 再実行なし）。")
+        w("")
+        w("| 構成 | n | 修正前 | 修正後 | 修正10件の正答数 |")
+        w("|---|---|---|---|---|")
+        for name, s in rescore.items():
+            n_up = sum(1 for d in s["fixed_cases"] if d["after"] > d["before"])
+            w(
+                f"| {name} | {s['n']} | {s['overall_before_fix']} | "
+                f"**{s['overall_after_fix']}** | {n_up}/{len(s['fixed_cases'])} 件上昇 |"
+            )
+        w("")
+        w("advanced は修正 10 件中 9 件で正しい条文を**既に引用していた**（期待値だけが")
+        w("間違っていた）。dense は修正後も到達できないケースが残り、修正後の世界では")
+        w("検索改善の優位がいっそう明確になる。")
+        w("")
+
     # ----- 改善の経緯 -----
     w("## 5. 評価基盤の主な改善")
     w("")
