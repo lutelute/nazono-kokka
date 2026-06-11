@@ -54,3 +54,4 @@ logs/*.log
 # Claude Code セッション引き継ぎ（個人作業記録）
 .claude/
 test_cases/results/*.jsonl
+test_cases/results/*.html
